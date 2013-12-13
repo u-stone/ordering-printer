@@ -1,6 +1,7 @@
 // PosdllDemoDlg.h : header file
 //
 
+#include "afxwin.h"
 #if !defined(AFX_POSDLLDEMODLG_H__F2D1A6BE_D5B5_41EA_8BD1_A9EDB256EAE4__INCLUDED_)
 #define AFX_POSDLLDEMODLG_H__F2D1A6BE_D5B5_41EA_8BD1_A9EDB256EAE4__INCLUDED_
 
@@ -78,6 +79,12 @@ protected:
 public:
 	afx_msg void OnBnClickedBtnseturl();
 	afx_msg void OnBnClickedBtnlog();
+	BOOL CPosdllDemoDlg::JustOpenPort();
+	afx_msg LRESULT OnUpdateLog(WPARAM wParam, LPARAM lParam);
+	// 接口地址
+	CString m_editUrl;
+	// 日志listbox
+	CListBox m_loglistbox;
 };
 
 //{{AFX_INSERT_LOCATION}}

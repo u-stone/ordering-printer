@@ -13,5 +13,7 @@ BOOL PrintInPageMode80(void);
 
 BOOL PrintInStandardMode56(char *print_str);
 BOOL PrintInPageMode56(void);
+BOOL startPrinterPOS();
+BOOL endPrinterPOS();
 
 #endif

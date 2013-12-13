@@ -21,6 +21,17 @@
 #endif // _AFX_NO_AFXCMN_SUPPORT
 
 
+
+#define WM_UPDATELOG   (WM_USER + 1024)
+
+
+
+
+
+
+
+
+
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
