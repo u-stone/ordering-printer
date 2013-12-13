@@ -380,6 +380,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\LogMsgDef.h"
+				>
+			</File>
+			<File
 				RelativePath="PosdllDemo.h"
 				>
 			</File>

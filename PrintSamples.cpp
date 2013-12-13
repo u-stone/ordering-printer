@@ -436,3 +436,14 @@ BOOL PrintInPageMode56(void)
 	return TRUE;
 }
 
+BOOL startPrinterPOS()
+{
+	VC_POS_StartDoc();
+	return TRUE;
+}
+
+BOOL endPrinterPOS()
+{
+	VC_POS_EndDoc();
+	return TRUE;
+}

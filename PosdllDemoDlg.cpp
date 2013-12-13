@@ -90,6 +90,7 @@ CPosdllDemoDlg::CPosdllDemoDlg(CWnd* pParent /*=NULL*/)
 	m_ModeSelect = 0;
 	m_strMsg = _T("");
 	m_strDrvName = _T("");
+	m_editUrl = _T("");
 	m_iTphWidth = 0;
 	//}}AFX_DATA_INIT
 	// Note that LoadIcon does not require a subsequent DestroyIcon in Win32
@@ -119,6 +120,8 @@ void CPosdllDemoDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_DRV_NAME, m_strDrvName);
 	DDX_CBIndex(pDX, IDC_PAGE_WIDTH, m_iTphWidth);
 	//}}AFX_DATA_MAP
+	DDX_Text(pDX, IDC_EdtUrl, m_editUrl);
+	DDX_Control(pDX, IDC_LIST1, m_loglistbox);
 }
 
 BEGIN_MESSAGE_MAP(CPosdllDemoDlg, CDialog)
@@ -139,6 +142,7 @@ BEGIN_MESSAGE_MAP(CPosdllDemoDlg, CDialog)
 	ON_BN_CLICKED(IDC_MODE_STANDARD, OnModeStandard)
 	ON_BN_CLICKED(IDC_MODE_PAGE, OnModePage)
 	ON_BN_CLICKED(IDC_SAVE_TO_TXT, OnSaveToTxt)
+	ON_MESSAGE(WM_UPDATELOG, OnUpdateLog)
 	ON_WM_HELPINFO()
 	//}}AFX_MSG_MAP
 	ON_BN_CLICKED(IDC_BtnSetUrl, &CPosdllDemoDlg::OnBnClickedBtnseturl)
@@ -256,11 +260,11 @@ void CPosdllDemoDlg::OnPortCom() //端口选择为串口
 
 	m_ctrlDrvName.EnableWindow(false);
 
-	SetDlgItemText(IDC_EDIT_STATUS,"端口选择为串口");
+	//SetDlgItemText(IDC_EDIT_STATUS,"端口选择为串口");
 	VC_POS_Close();
-	m_ctrlQueryStatus.EnableWindow(false);
-	m_ctrlPrint.EnableWindow(false);
-	m_ctrlClosePort.EnableWindow(false);
+	//m_ctrlQueryStatus.EnableWindow(false);
+	//m_ctrlPrint.EnableWindow(false);
+	//m_ctrlClosePort.EnableWindow(false);
 	GetDlgItem(IDC_OPEN_PORT)->EnableWindow(true);
 }
 
@@ -280,11 +284,11 @@ void CPosdllDemoDlg::OnPortLpt() //端口选择为并口
 
 	m_ctrlDrvName.EnableWindow(false);
 
-	SetDlgItemText(IDC_EDIT_STATUS,"端口选择为并口");
+	//SetDlgItemText(IDC_EDIT_STATUS,"端口选择为并口");
 	VC_POS_Close();
-	m_ctrlQueryStatus.EnableWindow(false);
-	m_ctrlPrint.EnableWindow(false);
-	m_ctrlClosePort.EnableWindow(false);
+	//m_ctrlQueryStatus.EnableWindow(false);
+	//m_ctrlPrint.EnableWindow(false);
+	//m_ctrlClosePort.EnableWindow(false);
 	GetDlgItem(IDC_OPEN_PORT)->EnableWindow(true);
 }
 
@@ -304,11 +308,11 @@ void CPosdllDemoDlg::OnPortUsb() //端口选择为USB口
 
 	m_ctrlDrvName.EnableWindow(false);
 
-	SetDlgItemText(IDC_EDIT_STATUS,"端口选择为USB口");
+	//SetDlgItemText(IDC_EDIT_STATUS,"端口选择为USB口");
 	VC_POS_Close();
-	m_ctrlQueryStatus.EnableWindow(false);
-	m_ctrlPrint.EnableWindow(false);
-	m_ctrlClosePort.EnableWindow(false);
+	//m_ctrlQueryStatus.EnableWindow(false);
+	//m_ctrlPrint.EnableWindow(false);
+	//m_ctrlClosePort.EnableWindow(false);
 	GetDlgItem(IDC_OPEN_PORT)->EnableWindow(true);
 }
 
@@ -328,11 +332,11 @@ void CPosdllDemoDlg::OnPortNet() //端口选择为网络接口
 
 	m_ctrlDrvName.EnableWindow(false);
 
-	SetDlgItemText(IDC_EDIT_STATUS,"端口选择为网络接口");
+	//SetDlgItemText(IDC_EDIT_STATUS,"端口选择为网络接口");
 	VC_POS_Close();
-	m_ctrlQueryStatus.EnableWindow(false);
-	m_ctrlPrint.EnableWindow(false);
-	m_ctrlClosePort.EnableWindow(false);
+	//m_ctrlQueryStatus.EnableWindow(false);
+	//m_ctrlPrint.EnableWindow(false);
+	//m_ctrlClosePort.EnableWindow(false);
 	GetDlgItem(IDC_OPEN_PORT)->EnableWindow(true);
 }
 
@@ -352,11 +356,11 @@ void CPosdllDemoDlg::OnPortDrv() //端口选择为驱动程序
 
 	m_ctrlIPAddr.EnableWindow(false);	
 
-	SetDlgItemText(IDC_EDIT_STATUS,"端口选择为驱动程序");
+	//SetDlgItemText(IDC_EDIT_STATUS,"端口选择为驱动程序");
 	VC_POS_Close();
-	m_ctrlQueryStatus.EnableWindow(false);
-	m_ctrlPrint.EnableWindow(false);
-	m_ctrlClosePort.EnableWindow(false);
+	//m_ctrlQueryStatus.EnableWindow(false);
+	//m_ctrlPrint.EnableWindow(false);
+	//m_ctrlClosePort.EnableWindow(false);
 	GetDlgItem(IDC_OPEN_PORT)->EnableWindow(true);
 }
 
@@ -627,46 +631,61 @@ void CPosdllDemoDlg::OnQueryStatus() //查询状态
 void CPosdllDemoDlg::OnPrint() 
 {
 	// TODO: Add your control notification handler code here
-	UpdateData(TRUE);
+	if (!JustOpenPort()) {
+		return;
+	}
 
-	if(IsPrinter)  //如果选择用驱动程序打印
-	{
-		VC_POS_StartDoc();
+	UpdateData(TRUE);
+	if (m_editUrl == "") {
+		m_loglistbox.AddString("请填写合法的URL，格式为http://xxx");
+		return;
+	}
+
+	g_pi.hWndMsg = GetSafeHwnd();
+	g_pi.strUrl = m_editUrl;
+	g_pi.IsPrinter = IsPrinter;
+
+	if (g_pi.bEnablePrint == FALSE) {
+		g_pi.bEnablePrint = TRUE;
 	}
 
 	if (g_pi.bPrintThreadWorking == FALSE){//保证只能开一个打印线程
 		AfxBeginThread((AFX_THREADPROC)Printer_Lsh::PrintWorker::worker, &g_pi);
 	}
 
-	if(IsPrinter) //如果选择用驱动程序打印
-	{
-		VC_POS_EndDoc();
-	}
-
+	m_ctrlPrint.EnableWindow(false);
 	UpdateData(false);
 	return;
 }
 
 void CPosdllDemoDlg::OnClosePort() //关闭端口
 {
+	UpdateData(true);
 	// TODO: Add your control notification handler code here
 	int nRet;
 	nRet = VC_POS_Close();
 	if(POS_FAIL == nRet)
 	{
 		m_strMsg = "端口关闭失败！";
+		m_loglistbox.AddString("端口关闭失败");
 	}
 	else if(POS_ERROR_INVALID_HANDLE == nRet)
 	{
 		m_strMsg = "端口关闭失败！";
+		m_loglistbox.AddString("端口关闭失败");
 	}
 	else
 	{
-		GetDlgItem(IDC_OPEN_PORT)->EnableWindow(true);
+		//GetDlgItem(IDC_OPEN_PORT)->EnableWindow(true);
 		m_strMsg = "端口关闭成功！";
-		m_ctrlQueryStatus.EnableWindow(false);
-		m_ctrlPrint.EnableWindow(false);
+		//m_ctrlQueryStatus.EnableWindow(false);
+		m_ctrlPrint.EnableWindow(true);
 		m_ctrlClosePort.EnableWindow(false);		
+
+		if (g_pi.bEnablePrint == TRUE) {
+			g_pi.bEnablePrint = FALSE;
+		}
+		m_loglistbox.AddString("端口关闭成功");
 	}
 
 	UpdateData(false);
@@ -742,7 +761,213 @@ void CPosdllDemoDlg::OnBnClickedBtnlog()
 	//size_t count = Printer_Lsh::PrintWorker::GetLogCount();
 	//for (int i = 0; i < count; ++i){
 	//	//循环得到日志
-	//	Printer_Lsh::PrintRecorder recorder = Printer_Lsh::PrintWorker::GetLog(i);
+	//	//Printer_Lsh::PrintRecorder recorder = Printer_Lsh::PrintWorker::GetLog(i);
 	//	//AddString(recorder.);这个可以添加在列表控件中
 	//}
 }
+
+LRESULT CPosdllDemoDlg::OnUpdateLog(WPARAM wParam, LPARAM lParam)
+{
+	static size_t oldsize = 0;
+	size_t cursize = Printer_Lsh::PrintWorker::GetLogCount();
+	for (int i = oldsize; i < cursize; ++i){
+		//循环得到日志
+		CString str = Printer_Lsh::PrintWorker::GetLog(i);
+		m_loglistbox.AddString(str);
+	}
+	oldsize = cursize;
+	return 0;
+}
+
+
+BOOL CPosdllDemoDlg::JustOpenPort() //打开端口
+{
+	// TODO: Add your control notification handler code here
+	UpdateData(true);
+
+	if(0 == m_PortType) //要打开的端口为串口
+	{	
+		CString strPortName;
+
+		int iBaudrate;
+		int iDataBits;
+		int iStopBits;
+		int iParity;
+		int iFlowControl;
+
+		m_ctrlComName.GetLBText(m_ctrlComName.GetCurSel(),strPortName);
+		iDataBits = m_ctrlDataBits.GetCurSel()+7;//索引为0表示数据位为7，为1表示8，详见帮助文档
+		int tmp = m_ctrlStopBits.GetCurSel();//详见帮助文档
+		if(0 == tmp)//停止位为1
+		{
+			iStopBits = 0;
+		}
+		if(1 == tmp)//停止位为2
+		{
+			iStopBits = 2;
+		}
+		int temp = m_ctrlParity.GetCurSel();//详见帮助文档
+		if(0 == temp)//偶校验
+		{
+			iParity = 2;
+		}
+		else if(1 == temp)//奇校验
+		{
+			iParity = 1;
+		}
+		else//无校验
+		{
+			iParity = 0;
+		}
+		int iRet = m_ctrlFlowControl.GetCurSel();//详见帮助文档
+		if(0 == iRet)//Xon/Xoff
+		{
+			iFlowControl = 2;
+		}else if(1 == iRet)//POS_COM_RTS_CTS
+		{
+			iFlowControl = 1;
+		}
+		else//POS_COM_NO_HANDSHAKE
+		{
+			iFlowControl = 3;
+		}
+
+		switch(m_ctrlBaudrate.GetCurSel())
+		{		
+		case 0:
+			iBaudrate = 2400;
+			break;
+
+		case 1:
+			iBaudrate = 4800;
+			break;
+
+		case 2:
+			iBaudrate = 9600;
+			break;
+
+		case 3:
+			iBaudrate = 19200;
+			break;
+
+		case 4:
+			iBaudrate = 38400;
+			break;
+
+		case 5:
+			iBaudrate = 57600;
+			break;
+
+		case 6:
+			iBaudrate = 115200;
+			break;
+
+		default:
+			iBaudrate = 9600;
+			break;
+		}
+
+		g_hComm = VC_POS_Open(strPortName,iBaudrate,iDataBits,iStopBits,iParity,iFlowControl);
+	}
+
+	if(1 == m_PortType) //要打开的端口为并口
+	{
+		IsPrinter = false;
+
+		CString strPortName;
+		m_ctrlLPTName.GetLBText(m_ctrlLPTName.GetCurSel(),strPortName);
+		g_hComm = VC_POS_Open(strPortName,0,0,0,0,POS_OPEN_PARALLEL_PORT);
+	}
+
+	if(2 == m_PortType) //要打开的端口为USB口
+	{
+		IsPrinter = false;
+
+		g_hComm = VC_POS_Open("BYUSB-0",0,0,0,0,POS_OPEN_BYUSB_PORT);
+	}
+
+	if(3 == m_PortType) //要打开的端口为网络接口
+	{
+		if(m_ctrlIPAddr.IsBlank())
+		{
+			m_strMsg = "IP地址不能为空！";
+			m_loglistbox.AddString("IP地址不能为空！");
+			m_ctrlIPAddr.SetFocus();
+			UpdateData(false);
+			return FALSE;
+		}
+		else
+		{
+			IsPrinter = false;
+
+			CString tmp;
+			BYTE  nField1, nField2, nField3, nField4;
+
+			m_ctrlIPAddr.GetAddress(nField1, nField2, nField3, nField4);
+
+			tmp.Format("%d",nField1);
+			strNetPortName = tmp;
+			strNetPortName += ".";
+
+			tmp.Format("%d",nField2);
+			strNetPortName += tmp;
+			strNetPortName += ".";
+
+			tmp.Format("%d",nField3);
+			strNetPortName += tmp;
+			strNetPortName += ".";
+
+			tmp.Format("%d",nField4);
+			strNetPortName += tmp;
+
+			g_hComm = VC_POS_Open(strNetPortName,0,0,0,0,POS_OPEN_NETPORT);
+		}
+	}
+
+	if(4 == m_PortType) //要打开的端口为驱动程序
+	{
+		if("" == m_strDrvName)
+		{
+			m_strMsg = "驱动程序名不能为空！";
+			m_loglistbox.AddString("驱动程序名不能为空！");
+			m_ctrlDrvName.SetFocus();
+			UpdateData(false);
+			return FALSE;
+		}
+		else
+		{
+			IsPrinter = true;
+			g_hComm = VC_POS_Open(m_strDrvName,0,0,0,0,POS_OPEN_PRINTNAME);
+		}
+	}
+
+	if (g_hComm != INVALID_HANDLE_VALUE) //判断打开端口函数返回值
+	{
+		GetDlgItem(IDC_OPEN_PORT)->EnableWindow(false);
+		m_strMsg = "端口打开成功！";
+		m_loglistbox.AddString("端口打开成功！");
+		m_ctrlPrint.EnableWindow(true);
+		m_ctrlClosePort.EnableWindow(true);
+		if(m_PortType != 1 && m_PortType != 4)//并口和驱动程序接口不支持状态查询
+		{
+			m_ctrlQueryStatus.EnableWindow(true);
+		}
+	}
+	else
+	{
+		m_strMsg = "端口打开失败！";
+		m_loglistbox.AddString("端口打开失败！");
+		m_ctrlQueryStatus.EnableWindow(false);
+		//m_ctrlPrint.EnableWindow(false);
+		m_ctrlClosePort.EnableWindow(false);
+		UpdateData(false);
+		return FALSE;
+	}
+
+	UpdateData(false);
+	m_strMsg = "";
+	m_loglistbox.AddString("开始自动打印......");
+	return TRUE;
+}
+
+
