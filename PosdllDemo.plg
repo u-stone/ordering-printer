@@ -1,0 +1,231 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: PosdllDemo - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP7A35.tmp" with contents
+[
+/nologo /subsystem:windows /incremental:no /pdb:"Release/PosdllDemo.pdb" /machine:I386 /out:"Release/PosdllDemo.exe" 
+".\Release\httpclient.obj"
+".\Release\LoadDll.obj"
+".\Release\PosdllDemo.obj"
+".\Release\PosdllDemoDlg.obj"
+".\Release\PrintSamples.obj"
+".\Release\StdAfx.obj"
+".\Release\PosdllDemo.res"
+]
+Creating command line "link.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP7A35.tmp"
+<h3>Output Window</h3>
+Linking...
+nafxcw.lib(except.obj) : warning LNK4078: multiple ".CRT" sections found with different attributes (C0300040)
+LINK : warning LNK4075: ignoring /EDITANDCONTINUE due to /INCREMENTAL:NO specification
+libcpmt.lib(locale.obj) : error LNK2005: "public: __thiscall std::_Locinfo::~_Locinfo(void)" (??1_Locinfo@std@@QAE@XZ) already defined in json_vc71_libmtd.lib(json_reader.obj)
+libcpmt.lib(locale.obj) : error LNK2005: "public: static class std::locale::id std::num_put<char,class std::ostreambuf_iterator<char,struct std::char_traits<char> > >::id" (?id@?$num_put@DV?$ostreambuf_iterator@DU?$char_traits@D@std@@@std@@@std@@2V0locale@2@A) already defined in json_vc71_libmtd.lib(json_writer.obj)
+libcpmt.lib(locale.obj) : error LNK2005: "public: static class std::locale::id std::numpunct<char>::id" (?id@?$numpunct@D@std@@2V0locale@2@A) already defined in json_vc71_libmtd.lib(json_writer.obj)
+libcpmt.lib(locale0.obj) : error LNK2005: "public: static unsigned int const std::ctype<char>::table_size" (?table_size@?$ctype@D@std@@2IB) already defined in PosdllDemoDlg.obj
+libcpmtd.lib(locale.obj) : error LNK2005: "public: __thiscall std::locale::locale(class std::locale const &,class std::locale const &,int)" (??0locale@std@@QAE@ABV01@0H@Z) already defined in libcpmt.lib(locale.obj)
+libcpmtd.lib(locale.obj) : error LNK2005: "public: __thiscall std::locale::locale(char const *,int)" (??0locale@std@@QAE@PBDH@Z) already defined in libcpmt.lib(locale.obj)
+libcpmtd.lib(locale.obj) : error LNK2005: "public: __thiscall std::locale::locale(class std::locale const &,char const *,int)" (??0locale@std@@QAE@ABV01@PBDH@Z) already defined in libcpmt.lib(locale.obj)
+libcpmtd.lib(locale.obj) : error LNK2005: "public: class std::locale & __thiscall std::locale::_Addfac(class std::locale::facet *,unsigned int,unsigned int)" (?_Addfac@locale@std@@QAEAAV12@PAVfacet@12@II@Z) already defined in libcpmt.lib(locale.obj)
+libcpmtd.lib(locale.obj) : error LNK2005: "public: static class std::locale __cdecl std::locale::global(class std::locale const &)" (?global@locale@std@@SA?AV12@ABV12@@Z) already defined in libcpmt.lib(locale.obj)
+libcpmtd.lib(locale.obj) : error LNK2005: "private: static class std::locale::_Locimp * __cdecl std::locale::_Locimp::_Makeloc(class std::_Locinfo const &,int,class std::locale::_Locimp *,class std::locale const *)" (?_Makeloc@_Locimp@locale@std@@CAPAV123@ABV_Locinfo@3@HPAV123@PBV23@@Z) already defined in libcpmt.lib(locale.obj)
+libcpmtd.lib(locale.obj) : error LNK2005: "private: __thiscall std::locale::_Locimp::_Locimp(class std::locale::_Locimp const &)" (??0_Locimp@locale@std@@AAE@ABV012@@Z) already defined in libcpmt.lib(locale.obj)
+libcpmtd.lib(locale.obj) : error LNK2005: "private: void __thiscall std::locale::_Locimp::_Addfac(class std::locale::facet *,unsigned int)" (?_Addfac@_Locimp@locale@std@@AAEXPAVfacet@23@I@Z) already defined in libcpmt.lib(locale.obj)
+libcpmtd.lib(locale.obj) : error LNK2005: "public: __thiscall std::_Locinfo::_Locinfo(char const *)" (??0_Locinfo@std@@QAE@PBD@Z) already defined in libcpmt.lib(locale.obj)
+libcpmtd.lib(locale.obj) : error LNK2005: "public: __thiscall std::_Locinfo::_Locinfo(int,char const *)" (??0_Locinfo@std@@QAE@HPBD@Z) already defined in libcpmt.lib(locale.obj)
+libcpmtd.lib(locale.obj) : error LNK2005: "public: __thiscall std::_Locinfo::~_Locinfo(void)" (??1_Locinfo@std@@QAE@XZ) already defined in json_vc71_libmtd.lib(json_reader.obj)
+libcpmtd.lib(locale.obj) : error LNK2005: "public: class std::_Locinfo & __thiscall std::_Locinfo::_Addcats(int,char const *)" (?_Addcats@_Locinfo@std@@QAEAAV12@HPBD@Z) already defined in libcpmt.lib(locale.obj)
+libcpmtd.lib(locale.obj) : error LNK2005: "public: static class std::locale::id std::num_put<char,class std::ostreambuf_iterator<char,struct std::char_traits<char> > >::id" (?id@?$num_put@DV?$ostreambuf_iterator@DU?$char_traits@D@std@@@std@@@std@@2V0locale@2@A) already defined in json_vc71_libmtd.lib(json_writer.obj)
+libcpmtd.lib(locale.obj) : error LNK2005: "public: static class std::locale::id std::numpunct<char>::id" (?id@?$numpunct@D@std@@2V0locale@2@A) already defined in json_vc71_libmtd.lib(json_writer.obj)
+libcpmtd.lib(locale.obj) : error LNK2005: "public: static class std::locale::id std::ctype<char>::id" (?id@?$ctype@D@std@@2V0locale@2@A) already defined in libcpmt.lib(locale.obj)
+libcpmtd.lib(locale.obj) : error LNK2005: "public: static class std::locale::id std::num_get<char,class std::istreambuf_iterator<char,struct std::char_traits<char> > >::id" (?id@?$num_get@DV?$istreambuf_iterator@DU?$char_traits@D@std@@@std@@@std@@2V0locale@2@A) already defined in libcpmt.lib(locale.obj)
+libcpmtd.lib(locale.obj) : error LNK2005: "public: static class std::locale::id std::codecvt<char,char,int>::id" (?id@?$codecvt@DDH@std@@2V0locale@2@A) already defined in libcpmt.lib(locale.obj)
+httpclient.obj : error LNK2001: unresolved external symbol "struct HINSTANCE__ * __stdcall AfxFindStringResourceHandle(unsigned int)" (?AfxFindStringResourceHandle@@YGPAUHINSTANCE__@@I@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "struct HINSTANCE__ * __stdcall AfxFindStringResourceHandle(unsigned int)" (?AfxFindStringResourceHandle@@YGPAUHINSTANCE__@@I@Z)
+httpclient.obj : error LNK2001: unresolved external symbol "struct ATL::IAtlStringMgr * __stdcall AfxGetStringManager(void)" (?AfxGetStringManager@@YGPAUIAtlStringMgr@ATL@@XZ)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "struct ATL::IAtlStringMgr * __stdcall AfxGetStringManager(void)" (?AfxGetStringManager@@YGPAUIAtlStringMgr@ATL@@XZ)
+json_vc71_libmtd.lib(json_writer.obj) : error LNK2001: unresolved external symbol _memcpy_s
+httpclient.obj : error LNK2001: unresolved external symbol _memcpy_s
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol _memcpy_s
+json_vc71_libmtd.lib(json_value.obj) : error LNK2001: unresolved external symbol _memcpy_s
+json_vc71_libmtd.lib(json_reader.obj) : error LNK2001: unresolved external symbol _memcpy_s
+json_vc71_libmtd.lib(json_writer.obj) : error LNK2001: unresolved external symbol _memmove_s
+httpclient.obj : error LNK2001: unresolved external symbol _memmove_s
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol _memmove_s
+json_vc71_libmtd.lib(json_value.obj) : error LNK2001: unresolved external symbol _memmove_s
+json_vc71_libmtd.lib(json_reader.obj) : error LNK2001: unresolved external symbol _memmove_s
+json_vc71_libmtd.lib(json_reader.obj) : error LNK2001: unresolved external symbol ___security_cookie
+json_vc71_libmtd.lib(json_writer.obj) : error LNK2001: unresolved external symbol ___security_cookie
+httpclient.obj : error LNK2001: unresolved external symbol ___security_cookie
+PosdllDemo.obj : error LNK2001: unresolved external symbol ___security_cookie
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol ___security_cookie
+json_vc71_libmtd.lib(json_value.obj) : error LNK2001: unresolved external symbol ___security_cookie
+json_vc71_libmtd.lib(json_reader.obj) : error LNK2001: unresolved external symbol ___CxxFrameHandler3
+json_vc71_libmtd.lib(json_writer.obj) : error LNK2001: unresolved external symbol ___CxxFrameHandler3
+httpclient.obj : error LNK2001: unresolved external symbol ___CxxFrameHandler3
+PosdllDemo.obj : error LNK2001: unresolved external symbol ___CxxFrameHandler3
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol ___CxxFrameHandler3
+json_vc71_libmtd.lib(json_value.obj) : error LNK2001: unresolved external symbol ___CxxFrameHandler3
+json_vc71_libmtd.lib(json_reader.obj) : error LNK2001: unresolved external symbol @__security_check_cookie@4
+json_vc71_libmtd.lib(json_writer.obj) : error LNK2001: unresolved external symbol @__security_check_cookie@4
+httpclient.obj : error LNK2001: unresolved external symbol @__security_check_cookie@4
+PosdllDemo.obj : error LNK2001: unresolved external symbol @__security_check_cookie@4
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol @__security_check_cookie@4
+json_vc71_libmtd.lib(json_value.obj) : error LNK2001: unresolved external symbol @__security_check_cookie@4
+httpclient.obj : error LNK2001: unresolved external symbol "int __stdcall AfxParseURL(char const *,unsigned long &,class ATL::CStringT<char,class StrTraitMFC<char,class ATL::ChTraitsCRT<char> > > &,class ATL::CStringT<char,class StrTraitMFC<char,class ATL::ChTraitsCRT<char> > > &,unsigned short &)" (?AfxParseURL@@YGHPBDAAKAAV?$CStringT@DV?$StrTraitMFC@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@2AAG@Z)
+PosdllDemo.obj : error LNK2001: unresolved external symbol "protected: static struct AFX_MSGMAP const * __stdcall CWinApp::GetThisMessageMap(void)" (?GetThisMessageMap@CWinApp@@KGPBUAFX_MSGMAP@@XZ)
+PosdllDemo.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall CWinApp::InitLibId(void)" (?InitLibId@CWinApp@@UAEXXZ)
+PosdllDemo.obj : error LNK2001: unresolved external symbol "public: virtual int __thiscall CWinApp::Register(void)" (?Register@CWinApp@@UAEHXZ)
+PosdllDemo.obj : error LNK2001: unresolved external symbol "public: virtual int __thiscall CWinApp::Unregister(void)" (?Unregister@CWinApp@@UAEHXZ)
+PosdllDemo.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall CWinApp::HtmlHelpA(unsigned long,unsigned int)" (?HtmlHelpA@CWinApp@@UAEXKI@Z)
+PosdllDemo.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall CWinApp::WinHelpInternal(unsigned long,unsigned int)" (?WinHelpInternal@CWinApp@@UAEXKI@Z)
+PosdllDemo.obj : error LNK2001: unresolved external symbol "public: virtual struct HINSTANCE__ * __thiscall CWinApp::LoadAppLangResourceDLL(void)" (?LoadAppLangResourceDLL@CWinApp@@UAEPAUHINSTANCE__@@XZ)
+PosdllDemo.obj : error LNK2001: unresolved external symbol "public: virtual int __thiscall CWinApp::LoadSysPolicies(void)" (?LoadSysPolicies@CWinApp@@UAEHXZ)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "protected: virtual struct AFX_INTERFACEMAP const * __thiscall CWnd::GetInterfaceMap(void)const " (?GetInterfaceMap@CWnd@@MBEPBUAFX_INTERFACEMAP@@XZ)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: virtual int __thiscall CWnd::CreateEx(unsigned long,char const *,char const *,unsigned long,struct tagRECT const &,class CWnd *,unsigned int,void *)" (?CreateEx@CWnd@@UAEHKPBD0KABUtagRECT@@PAV1@IPAX@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: virtual int __thiscall CWnd::CreateEx(unsigned long,char const *,char const *,unsigned long,int,int,int,int,struct HWND__ *,struct HMENU__ *,void *)" (?CreateEx@CWnd@@UAEHKPBD0KHHHHPAUHWND__@@PAUHMENU__@@PAX@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: virtual class CMenu * __thiscall CWnd::GetMenu(void)const " (?GetMenu@CWnd@@UBEPAVCMenu@@XZ)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: virtual int __thiscall CWnd::SetMenu(class CMenu *)" (?SetMenu@CWnd@@UAEHPAVCMenu@@@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall CWnd::HtmlHelpA(unsigned long,unsigned int)" (?HtmlHelpA@CWnd@@UAEXKI@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall CWnd::WinHelpInternal(unsigned long,unsigned int)" (?WinHelpInternal@CWnd@@UAEXKI@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: virtual long __thiscall CWnd::EnsureStdObj(void)" (?EnsureStdObj@CWnd@@UAEJXZ)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: virtual long __thiscall CWnd::get_accParent(struct IDispatch * *)" (?get_accParent@CWnd@@UAEJPAPAUIDispatch@@@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: virtual long __thiscall CWnd::get_accChildCount(long *)" (?get_accChildCount@CWnd@@UAEJPAJ@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: virtual long __thiscall CWnd::get_accChild(struct tagVARIANT,struct IDispatch * *)" (?get_accChild@CWnd@@UAEJUtagVARIANT@@PAPAUIDispatch@@@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: virtual long __thiscall CWnd::get_accName(struct tagVARIANT,wchar_t * *)" (?get_accName@CWnd@@UAEJUtagVARIANT@@PAPA_W@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: virtual long __thiscall CWnd::get_accValue(struct tagVARIANT,wchar_t * *)" (?get_accValue@CWnd@@UAEJUtagVARIANT@@PAPA_W@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: virtual long __thiscall CWnd::get_accDescription(struct tagVARIANT,wchar_t * *)" (?get_accDescription@CWnd@@UAEJUtagVARIANT@@PAPA_W@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: virtual long __thiscall CWnd::get_accRole(struct tagVARIANT,struct tagVARIANT *)" (?get_accRole@CWnd@@UAEJUtagVARIANT@@PAU2@@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: virtual long __thiscall CWnd::get_accState(struct tagVARIANT,struct tagVARIANT *)" (?get_accState@CWnd@@UAEJUtagVARIANT@@PAU2@@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: virtual long __thiscall CWnd::get_accHelp(struct tagVARIANT,wchar_t * *)" (?get_accHelp@CWnd@@UAEJUtagVARIANT@@PAPA_W@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: virtual long __thiscall CWnd::get_accHelpTopic(wchar_t * *,struct tagVARIANT,long *)" (?get_accHelpTopic@CWnd@@UAEJPAPA_WUtagVARIANT@@PAJ@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: virtual long __thiscall CWnd::get_accKeyboardShortcut(struct tagVARIANT,wchar_t * *)" (?get_accKeyboardShortcut@CWnd@@UAEJUtagVARIANT@@PAPA_W@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: virtual long __thiscall CWnd::get_accFocus(struct tagVARIANT *)" (?get_accFocus@CWnd@@UAEJPAUtagVARIANT@@@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: virtual long __thiscall CWnd::get_accSelection(struct tagVARIANT *)" (?get_accSelection@CWnd@@UAEJPAUtagVARIANT@@@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: virtual long __thiscall CWnd::get_accDefaultAction(struct tagVARIANT,wchar_t * *)" (?get_accDefaultAction@CWnd@@UAEJUtagVARIANT@@PAPA_W@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: virtual long __thiscall CWnd::accSelect(long,struct tagVARIANT)" (?accSelect@CWnd@@UAEJJUtagVARIANT@@@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: virtual long __thiscall CWnd::accLocation(long *,long *,long *,long *,struct tagVARIANT)" (?accLocation@CWnd@@UAEJPAJ000UtagVARIANT@@@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: virtual long __thiscall CWnd::accNavigate(long,struct tagVARIANT,struct tagVARIANT *)" (?accNavigate@CWnd@@UAEJJUtagVARIANT@@PAU2@@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: virtual long __thiscall CWnd::accHitTest(long,long,struct tagVARIANT *)" (?accHitTest@CWnd@@UAEJJJPAUtagVARIANT@@@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: virtual long __thiscall CWnd::accDoDefaultAction(struct tagVARIANT)" (?accDoDefaultAction@CWnd@@UAEJUtagVARIANT@@@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: virtual long __thiscall CWnd::put_accName(struct tagVARIANT,wchar_t *)" (?put_accName@CWnd@@UAEJUtagVARIANT@@PA_W@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: virtual long __thiscall CWnd::put_accValue(struct tagVARIANT,wchar_t *)" (?put_accValue@CWnd@@UAEJUtagVARIANT@@PA_W@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: virtual long __thiscall CWnd::SetProxy(struct IAccessibleProxy *)" (?SetProxy@CWnd@@UAEJPAUIAccessibleProxy@@@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: virtual long __thiscall CWnd::CreateAccessibleProxy(unsigned int,long,long *)" (?CreateAccessibleProxy@CWnd@@UAEJIJPAJ@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "protected: virtual int __thiscall CWnd::CreateControlContainer(class COleControlContainer * *)" (?CreateControlContainer@CWnd@@MAEHPAPAVCOleControlContainer@@@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "protected: virtual int __thiscall CWnd::CreateControlSite(class COleControlContainer *,class COleControlSite * *,unsigned int,struct _GUID const &)" (?CreateControlSite@CWnd@@MAEHPAVCOleControlContainer@@PAPAVCOleControlSite@@IABU_GUID@@@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "protected: virtual struct _AFX_OCC_DIALOG_INFO * __thiscall CDialog::GetOccDialogInfo(void)" (?GetOccDialogInfo@CDialog@@MAEPAU_AFX_OCC_DIALOG_INFO@@XZ)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: virtual int __thiscall CDialog::Create(char const *,class CWnd *)" (?Create@CDialog@@UAEHPBDPAVCWnd@@@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: virtual int __thiscall CDialog::CreateIndirect(void *,class CWnd *)" (?CreateIndirect@CDialog@@UAEHPAXPAVCWnd@@@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: virtual int __thiscall CDialog::CreateIndirect(struct DLGTEMPLATE const *,class CWnd *,void *)" (?CreateIndirect@CDialog@@UAEHPBUDLGTEMPLATE@@PAVCWnd@@PAX@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "protected: static struct AFX_MSGMAP const * __stdcall CDialog::GetThisMessageMap(void)" (?GetThisMessageMap@CDialog@@KGPBUAFX_MSGMAP@@XZ)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: __thiscall std::exception::exception(char const * const &)" (??0exception@std@@QAE@ABQBD@Z)
+json_vc71_libmtd.lib(json_value.obj) : error LNK2001: unresolved external symbol "public: __thiscall std::exception::exception(char const * const &)" (??0exception@std@@QAE@ABQBD@Z)
+json_vc71_libmtd.lib(json_reader.obj) : error LNK2001: unresolved external symbol "public: __thiscall std::exception::exception(char const * const &)" (??0exception@std@@QAE@ABQBD@Z)
+json_vc71_libmtd.lib(json_writer.obj) : error LNK2001: unresolved external symbol "public: __thiscall std::exception::exception(char const * const &)" (??0exception@std@@QAE@ABQBD@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: virtual char const * __thiscall std::exception::what(void)const " (?what@exception@std@@UBEPBDXZ)
+json_vc71_libmtd.lib(json_value.obj) : error LNK2001: unresolved external symbol "public: virtual char const * __thiscall std::exception::what(void)const " (?what@exception@std@@UBEPBDXZ)
+json_vc71_libmtd.lib(json_reader.obj) : error LNK2001: unresolved external symbol "public: virtual char const * __thiscall std::exception::what(void)const " (?what@exception@std@@UBEPBDXZ)
+json_vc71_libmtd.lib(json_writer.obj) : error LNK2001: unresolved external symbol "public: virtual char const * __thiscall std::exception::what(void)const " (?what@exception@std@@UBEPBDXZ)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: virtual __thiscall std::exception::~exception(void)" (??1exception@std@@UAE@XZ)
+json_vc71_libmtd.lib(json_value.obj) : error LNK2001: unresolved external symbol "public: virtual __thiscall std::exception::~exception(void)" (??1exception@std@@UAE@XZ)
+json_vc71_libmtd.lib(json_reader.obj) : error LNK2001: unresolved external symbol "public: virtual __thiscall std::exception::~exception(void)" (??1exception@std@@UAE@XZ)
+json_vc71_libmtd.lib(json_writer.obj) : error LNK2001: unresolved external symbol "public: virtual __thiscall std::exception::~exception(void)" (??1exception@std@@UAE@XZ)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: __thiscall std::exception::exception(class std::exception const &)" (??0exception@std@@QAE@ABV01@@Z)
+json_vc71_libmtd.lib(json_value.obj) : error LNK2001: unresolved external symbol "public: __thiscall std::exception::exception(class std::exception const &)" (??0exception@std@@QAE@ABV01@@Z)
+json_vc71_libmtd.lib(json_reader.obj) : error LNK2001: unresolved external symbol "public: __thiscall std::exception::exception(class std::exception const &)" (??0exception@std@@QAE@ABV01@@Z)
+json_vc71_libmtd.lib(json_writer.obj) : error LNK2001: unresolved external symbol "public: __thiscall std::exception::exception(class std::exception const &)" (??0exception@std@@QAE@ABV01@@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "protected: virtual struct _AFX_OCC_DIALOG_INFO * __thiscall CWnd::GetOccDialogInfo(void)" (?GetOccDialogInfo@CWnd@@MAEPAU_AFX_OCC_DIALOG_INFO@@XZ)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: virtual int __thiscall CButton::Create(char const *,unsigned long,struct tagRECT const &,class CWnd *,unsigned int)" (?Create@CButton@@UAEHPBDKABUtagRECT@@PAVCWnd@@I@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: virtual int __thiscall CComboBox::Create(unsigned long,struct tagRECT const &,class CWnd *,unsigned int)" (?Create@CComboBox@@UAEHKABUtagRECT@@PAVCWnd@@I@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: virtual int __thiscall CIPAddressCtrl::Create(unsigned long,struct tagRECT const &,class CWnd *,unsigned int)" (?Create@CIPAddressCtrl@@UAEHKABUtagRECT@@PAVCWnd@@I@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: virtual int __thiscall CIPAddressCtrl::CreateEx(unsigned long,unsigned long,struct tagRECT const &,class CWnd *,unsigned int)" (?CreateEx@CIPAddressCtrl@@UAEHKKABUtagRECT@@PAVCWnd@@I@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol _strnlen
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol __vscprintf
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol _vsprintf_s
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "void __stdcall DDX_Text(class CDataExchange *,int,class ATL::CStringT<char,class StrTraitMFC<char,class ATL::ChTraitsCRT<char> > > &)" (?DDX_Text@@YGXPAVCDataExchange@@HAAV?$CStringT@DV?$StrTraitMFC@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "protected: void __thiscall CDialog::OnPaint(void)" (?OnPaint@CDialog@@IAEXXZ)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: static void __cdecl std::_String_base::_Xran(void)" (?_Xran@_String_base@std@@SAXXZ)
+json_vc71_libmtd.lib(json_value.obj) : error LNK2001: unresolved external symbol "public: static void __cdecl std::_String_base::_Xran(void)" (?_Xran@_String_base@std@@SAXXZ)
+json_vc71_libmtd.lib(json_reader.obj) : error LNK2001: unresolved external symbol "public: static void __cdecl std::_String_base::_Xran(void)" (?_Xran@_String_base@std@@SAXXZ)
+json_vc71_libmtd.lib(json_writer.obj) : error LNK2001: unresolved external symbol "public: static void __cdecl std::_String_base::_Xran(void)" (?_Xran@_String_base@std@@SAXXZ)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: static void __cdecl std::_String_base::_Xlen(void)" (?_Xlen@_String_base@std@@SAXXZ)
+json_vc71_libmtd.lib(json_value.obj) : error LNK2001: unresolved external symbol "public: static void __cdecl std::_String_base::_Xlen(void)" (?_Xlen@_String_base@std@@SAXXZ)
+json_vc71_libmtd.lib(json_reader.obj) : error LNK2001: unresolved external symbol "public: static void __cdecl std::_String_base::_Xlen(void)" (?_Xlen@_String_base@std@@SAXXZ)
+json_vc71_libmtd.lib(json_writer.obj) : error LNK2001: unresolved external symbol "public: static void __cdecl std::_String_base::_Xlen(void)" (?_Xlen@_String_base@std@@SAXXZ)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: int __thiscall CIPAddressCtrl::GetAddress(unsigned char &,unsigned char &,unsigned char &,unsigned char &)const " (?GetAddress@CIPAddressCtrl@@QBEHAAE000@Z)
+PosdllDemoDlg.obj : error LNK2001: unresolved external symbol "public: void __thiscall CComboBox::GetLBText(int,class ATL::CStringT<char,class StrTraitMFC<char,class ATL::ChTraitsCRT<char> > > &)const " (?GetLBText@CComboBox@@QBEXHAAV?$CStringT@DV?$StrTraitMFC@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@Z)
+json_vc71_libmtd.lib(json_value.obj) : error LNK2001: unresolved external symbol __RTC_Shutdown
+json_vc71_libmtd.lib(json_reader.obj) : error LNK2001: unresolved external symbol __RTC_Shutdown
+json_vc71_libmtd.lib(json_writer.obj) : error LNK2001: unresolved external symbol __RTC_Shutdown
+json_vc71_libmtd.lib(json_value.obj) : error LNK2001: unresolved external symbol __RTC_InitBase
+json_vc71_libmtd.lib(json_reader.obj) : error LNK2001: unresolved external symbol __RTC_InitBase
+json_vc71_libmtd.lib(json_writer.obj) : error LNK2001: unresolved external symbol __RTC_InitBase
+json_vc71_libmtd.lib(json_value.obj) : error LNK2001: unresolved external symbol __RTC_CheckEsp
+json_vc71_libmtd.lib(json_reader.obj) : error LNK2001: unresolved external symbol __RTC_CheckEsp
+json_vc71_libmtd.lib(json_writer.obj) : error LNK2001: unresolved external symbol __RTC_CheckEsp
+json_vc71_libmtd.lib(json_value.obj) : error LNK2001: unresolved external symbol "public: __thiscall std::_Lockit::_Lockit(int)" (??0_Lockit@std@@QAE@H@Z)
+json_vc71_libmtd.lib(json_reader.obj) : error LNK2001: unresolved external symbol "public: __thiscall std::_Lockit::_Lockit(int)" (??0_Lockit@std@@QAE@H@Z)
+json_vc71_libmtd.lib(json_writer.obj) : error LNK2001: unresolved external symbol "public: __thiscall std::_Lockit::_Lockit(int)" (??0_Lockit@std@@QAE@H@Z)
+json_vc71_libmtd.lib(json_value.obj) : error LNK2001: unresolved external symbol @_RTC_CheckStackVars@8
+json_vc71_libmtd.lib(json_reader.obj) : error LNK2001: unresolved external symbol @_RTC_CheckStackVars@8
+json_vc71_libmtd.lib(json_writer.obj) : error LNK2001: unresolved external symbol @_RTC_CheckStackVars@8
+json_vc71_libmtd.lib(json_value.obj) : error LNK2001: unresolved external symbol "void __cdecl std::_Debug_message(wchar_t const *,wchar_t const *,unsigned int)" (?_Debug_message@std@@YAXPB_W0I@Z)
+json_vc71_libmtd.lib(json_reader.obj) : error LNK2001: unresolved external symbol "void __cdecl std::_Debug_message(wchar_t const *,wchar_t const *,unsigned int)" (?_Debug_message@std@@YAXPB_W0I@Z)
+json_vc71_libmtd.lib(json_writer.obj) : error LNK2001: unresolved external symbol "void __cdecl std::_Debug_message(wchar_t const *,wchar_t const *,unsigned int)" (?_Debug_message@std@@YAXPB_W0I@Z)
+json_vc71_libmtd.lib(json_value.obj) : error LNK2001: unresolved external symbol __wassert
+json_vc71_libmtd.lib(json_reader.obj) : error LNK2001: unresolved external symbol __wassert
+json_vc71_libmtd.lib(json_writer.obj) : error LNK2001: unresolved external symbol __wassert
+json_vc71_libmtd.lib(json_value.obj) : error LNK2001: unresolved external symbol "public: __thiscall std::exception::exception(void)" (??0exception@std@@QAE@XZ)
+json_vc71_libmtd.lib(json_reader.obj) : error LNK2001: unresolved external symbol "public: __thiscall std::exception::exception(void)" (??0exception@std@@QAE@XZ)
+json_vc71_libmtd.lib(json_writer.obj) : error LNK2001: unresolved external symbol "public: __thiscall std::exception::exception(void)" (??0exception@std@@QAE@XZ)
+json_vc71_libmtd.lib(json_value.obj) : error LNK2001: unresolved external symbol "void __cdecl operator delete[](void *)" (??_V@YAXPAX@Z)
+json_vc71_libmtd.lib(json_reader.obj) : error LNK2001: unresolved external symbol "void __cdecl operator delete[](void *)" (??_V@YAXPAX@Z)
+json_vc71_libmtd.lib(json_writer.obj) : error LNK2001: unresolved external symbol "void __cdecl operator delete[](void *)" (??_V@YAXPAX@Z)
+json_vc71_libmtd.lib(json_value.obj) : error LNK2001: unresolved external symbol "void * __cdecl operator new[](unsigned int)" (??_U@YAPAXI@Z)
+json_vc71_libmtd.lib(json_value.obj) : error LNK2001: unresolved external symbol __ftol2_sse
+json_vc71_libmtd.lib(json_value.obj) : error LNK2001: unresolved external symbol "void * __cdecl operator new[](unsigned int,struct std::_DebugHeapTag_t const &,char *,int)" (??_U@YAPAXIABU_DebugHeapTag_t@std@@PADH@Z)
+json_vc71_libmtd.lib(json_reader.obj) : error LNK2001: unresolved external symbol "void * __cdecl operator new[](unsigned int,struct std::_DebugHeapTag_t const &,char *,int)" (??_U@YAPAXIABU_DebugHeapTag_t@std@@PADH@Z)
+json_vc71_libmtd.lib(json_writer.obj) : error LNK2001: unresolved external symbol "void * __cdecl operator new[](unsigned int,struct std::_DebugHeapTag_t const &,char *,int)" (??_U@YAPAXIABU_DebugHeapTag_t@std@@PADH@Z)
+json_vc71_libmtd.lib(json_value.obj) : error LNK2001: unresolved external symbol "struct std::_DebugHeapTag_t const & __cdecl std::_DebugHeapTag_func(void)" (?_DebugHeapTag_func@std@@YAABU_DebugHeapTag_t@1@XZ)
+json_vc71_libmtd.lib(json_reader.obj) : error LNK2001: unresolved external symbol "struct std::_DebugHeapTag_t const & __cdecl std::_DebugHeapTag_func(void)" (?_DebugHeapTag_func@std@@YAABU_DebugHeapTag_t@1@XZ)
+json_vc71_libmtd.lib(json_writer.obj) : error LNK2001: unresolved external symbol "struct std::_DebugHeapTag_t const & __cdecl std::_DebugHeapTag_func(void)" (?_DebugHeapTag_func@std@@YAABU_DebugHeapTag_t@1@XZ)
+json_vc71_libmtd.lib(json_value.obj) : error LNK2001: unresolved external symbol __invalid_parameter
+json_vc71_libmtd.lib(json_reader.obj) : error LNK2001: unresolved external symbol __invalid_parameter
+json_vc71_libmtd.lib(json_writer.obj) : error LNK2001: unresolved external symbol __invalid_parameter
+json_vc71_libmtd.lib(json_value.obj) : error LNK2001: unresolved external symbol __CrtDbgReportW
+json_vc71_libmtd.lib(json_reader.obj) : error LNK2001: unresolved external symbol __CrtDbgReportW
+json_vc71_libmtd.lib(json_writer.obj) : error LNK2001: unresolved external symbol __CrtDbgReportW
+json_vc71_libmtd.lib(json_reader.obj) : error LNK2001: unresolved external symbol "public: void __thiscall std::_Mutex::_Unlock(void)" (?_Unlock@_Mutex@std@@QAEXXZ)
+json_vc71_libmtd.lib(json_writer.obj) : error LNK2001: unresolved external symbol "public: void __thiscall std::_Mutex::_Unlock(void)" (?_Unlock@_Mutex@std@@QAEXXZ)
+json_vc71_libmtd.lib(json_reader.obj) : error LNK2001: unresolved external symbol "public: void __thiscall std::_Mutex::_Lock(void)" (?_Lock@_Mutex@std@@QAEXXZ)
+json_vc71_libmtd.lib(json_writer.obj) : error LNK2001: unresolved external symbol "public: void __thiscall std::_Mutex::_Lock(void)" (?_Lock@_Mutex@std@@QAEXXZ)
+json_vc71_libmtd.lib(json_reader.obj) : error LNK2001: unresolved external symbol "private: static void __cdecl std::locale::facet::facet_Register(class std::locale::facet *)" (?facet_Register@facet@locale@std@@CAXPAV123@@Z)
+json_vc71_libmtd.lib(json_writer.obj) : error LNK2001: unresolved external symbol "private: static void __cdecl std::locale::facet::facet_Register(class std::locale::facet *)" (?facet_Register@facet@locale@std@@CAXPAV123@@Z)
+json_vc71_libmtd.lib(json_reader.obj) : error LNK2001: unresolved external symbol "private: static class std::locale::_Locimp * __cdecl std::locale::_Getgloballocale(void)" (?_Getgloballocale@locale@std@@CAPAV_Locimp@12@XZ)
+json_vc71_libmtd.lib(json_writer.obj) : error LNK2001: unresolved external symbol "private: static class std::locale::_Locimp * __cdecl std::locale::_Getgloballocale(void)" (?_Getgloballocale@locale@std@@CAPAV_Locimp@12@XZ)
+json_vc71_libmtd.lib(json_reader.obj) : error LNK2001: unresolved external symbol "public: static void __cdecl std::_Locinfo::_Locinfo_ctor(class std::_Locinfo *,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)" (?_Locinfo_ctor@_Locinfo@std@@SAXPAV12@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@2@@Z)
+json_vc71_libmtd.lib(json_writer.obj) : error LNK2001: unresolved external symbol "public: static void __cdecl std::_Locinfo::_Locinfo_ctor(class std::_Locinfo *,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)" (?_Locinfo_ctor@_Locinfo@std@@SAXPAV12@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@2@@Z)
+json_vc71_libmtd.lib(json_reader.obj) : error LNK2001: unresolved external symbol "public: static void __cdecl std::_Locinfo::_Locinfo_dtor(class std::_Locinfo *)" (?_Locinfo_dtor@_Locinfo@std@@SAXPAV12@@Z)
+json_vc71_libmtd.lib(json_writer.obj) : error LNK2001: unresolved external symbol "public: static void __cdecl std::_Locinfo::_Locinfo_dtor(class std::_Locinfo *)" (?_Locinfo_dtor@_Locinfo@std@@SAXPAV12@@Z)
+json_vc71_libmtd.lib(json_reader.obj) : error LNK2001: unresolved external symbol "void * __cdecl operator new(unsigned int,struct std::_DebugHeapTag_t const &,char *,int)" (??2@YAPAXIABU_DebugHeapTag_t@std@@PADH@Z)
+json_vc71_libmtd.lib(json_writer.obj) : error LNK2001: unresolved external symbol "void * __cdecl operator new(unsigned int,struct std::_DebugHeapTag_t const &,char *,int)" (??2@YAPAXIABU_DebugHeapTag_t@std@@PADH@Z)
+json_vc71_libmtd.lib(json_writer.obj) : error LNK2001: unresolved external symbol _sprintf_s
+json_vc71_libmtd.lib(json_writer.obj) : error LNK2001: unresolved external symbol "private: static void __cdecl std::ios_base::_Ios_base_dtor(class std::ios_base *)" (?_Ios_base_dtor@ios_base@std@@CAXPAV12@@Z)
+json_vc71_libmtd.lib(json_writer.obj) : error LNK2001: unresolved external symbol "public: __thiscall std::_Mutex::~_Mutex(void)" (??1_Mutex@std@@QAE@XZ)
+json_vc71_libmtd.lib(json_writer.obj) : error LNK2001: unresolved external symbol "long const std::_BADOFF" (?_BADOFF@std@@3JB)
+json_vc71_libmtd.lib(json_writer.obj) : error LNK2001: unresolved external symbol "public: static void __cdecl std::ios_base::_Addstd(class std::ios_base *)" (?_Addstd@ios_base@std@@SAXPAV12@@Z)
+json_vc71_libmtd.lib(json_writer.obj) : error LNK2001: unresolved external symbol "public: __thiscall std::_Mutex::_Mutex(void)" (??0_Mutex@std@@QAE@XZ)
+Release/PosdllDemo.exe : fatal error LNK1120: 100 unresolved externals
+Ö´ÐÐ link.exe Ê±³ö´í.
+
+
+
+<h3>Results</h3>
+PosdllDemo.exe - 1 error(s), 0 warning(s)
+</pre>
+</body>
+</html>
