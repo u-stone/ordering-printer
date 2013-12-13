@@ -1,0 +1,280 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// 中文(中华人民共和国) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 4, 2\r\n"
+    "#pragma code_page(936)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\PosdllDemo.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""l.chs\\afxres.rc""          // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\PosdllDemo.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_POSDLLDEMO_DIALOG DIALOGEX 0, 0, 285, 214
+STYLE DS_SETFONT | DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "PosdllDemo"
+FONT 10, "宋体", 0, 0, 0x1
+BEGIN
+    CONTROL         "串口",IDC_PORT_COM,"Button",BS_AUTORADIOBUTTON | WS_GROUP,14,19,37,10
+    CONTROL         "并口",IDC_PORT_LPT,"Button",BS_AUTORADIOBUTTON,67,19,37,10
+    CONTROL         "USB口",IDC_PORT_USB,"Button",BS_AUTORADIOBUTTON,123,19,37,10
+    CONTROL         "网络接口",IDC_PORT_NET,"Button",BS_AUTORADIOBUTTON,14,35,42,10
+    CONTROL         "驱动程序",IDC_PORT_DRV,"Button",BS_AUTORADIOBUTTON,67,35,40,10
+    COMBOBOX        IDC_COM_NAME,49,69,46,83,CBS_DROPDOWNLIST | WS_VSCROLL | WS_GROUP | WS_TABSTOP
+    COMBOBOX        IDC_BAUDRATE,49,85,46,89,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_DATABITS,49,101,46,54,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_PARITY,148,69,46,58,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_STOPBITS,148,85,46,44,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_FLOW_CONTROL,148,101,46,60,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_LPT_NAME,49,117,46,49,CBS_DROPDOWNLIST | WS_DISABLED | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "IPAddress1",IDC_IPADDRESS,"SysIPAddress32",WS_TABSTOP,49,133,80,13
+    EDITTEXT        IDC_DRV_NAME,49,149,81,14,ES_AUTOHSCROLL | WS_DISABLED
+    CONTROL         "标准模式",IDC_MODE_STANDARD,"Button",BS_AUTORADIOBUTTON | WS_GROUP,225,52,40,12
+    CONTROL         "页模式",IDC_MODE_PAGE,"Button",BS_AUTORADIOBUTTON,225,71,35,12
+    COMBOBOX        IDC_PAGE_WIDTH,226,115,38,49,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "数据保存到文件Test.txt，不向端口下发",IDC_SAVE_TO_TXT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,173,146,10
+    PUSHBUTTON      "打开端口",IDC_OPEN_PORT,8,191,39,16
+    PUSHBUTTON      "查询状态",IDC_QUERY_STATUS,48,191,39,16,WS_DISABLED
+    EDITTEXT        IDC_EDIT_STATUS,88,191,108,16,ES_AUTOHSCROLL | ES_READONLY
+    PUSHBUTTON      "打印",IDC_PRINT,197,191,39,16,WS_DISABLED
+    PUSHBUTTON      "关闭端口",IDC_CLOSE_PORT,237,191,39,16,WS_DISABLED
+    GROUPBOX        "端口配置",IDC_STATIC,8,57,201,112
+    GROUPBOX        "端口选择",IDC_STATIC,8,8,201,40
+    LTEXT           "串口名称：",IDC_STATIC,12,71,37,11
+    LTEXT           "每秒位数：",IDC_STATIC,12,85,37,11
+    LTEXT           "校验位：",IDC_STATIC,117,69,30,11
+    LTEXT           "并口名称：",IDC_STATIC,12,119,37,11
+    LTEXT           "IP地址：",IDC_STATIC,19,135,30,11
+    LTEXT           "驱动名称：",IDC_STATIC,12,151,37,11
+    LTEXT           "数据位：",IDC_STATIC,19,101,30,11
+    LTEXT           "停止位：",IDC_STATIC,117,85,30,11
+    LTEXT           "数据流控制：",IDC_STATIC,102,103,45,11
+    GROUPBOX        "示例设置",IDC_STATIC,216,8,57,161
+    LTEXT           "页宽(mm)：",IDC_STATIC,226,99,38,9
+    GROUPBOX        "模式选择",IDC_STATIC,222,40,46,46
+    PUSHBUTTON      "点击设置URL",IDC_BtnSetUrl,145,150,50,14
+    PUSHBUTTON      "Button1",IDC_BtnLog,145,133,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,4,0,0
+ PRODUCTVERSION 1,4,0,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080404b0"
+        BEGIN
+            VALUE "CompanyName", "SNBC"
+            VALUE "FileDescription", "PosdllDemo Microsoft 基础类应用程序"
+            VALUE "FileVersion", "1, 4, 0, 0"
+            VALUE "InternalName", "PosdllDemo"
+            VALUE "LegalCopyright", "版权所有 (C) 2006"
+            VALUE "OriginalFilename", "PosdllDemo.EXE"
+            VALUE "ProductName", "PosdllDemo 应用程序"
+            VALUE "ProductVersion", "1, 4, 0, 0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x804, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_POSDLLDEMO_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 278
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 207
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_POSDLLDEMO_DIALOG DLGINIT
+BEGIN
+    IDC_COM_NAME, 0x403, 5, 0
+0x4f43, 0x314d, "\000" 
+    IDC_COM_NAME, 0x403, 5, 0
+0x4f43, 0x324d, "\000" 
+    IDC_COM_NAME, 0x403, 5, 0
+0x4f43, 0x334d, "\000" 
+    IDC_COM_NAME, 0x403, 5, 0
+0x4f43, 0x344d, "\000" 
+    IDC_COM_NAME, 0x403, 5, 0
+0x4f43, 0x354d, "\000" 
+    IDC_COM_NAME, 0x403, 5, 0
+0x4f43, 0x364d, "\000" 
+    IDC_COM_NAME, 0x403, 5, 0
+0x4f43, 0x374d, "\000" 
+    IDC_COM_NAME, 0x403, 5, 0
+0x4f43, 0x384d, "\000" 
+    IDC_COM_NAME, 0x403, 5, 0
+0x4f43, 0x394d, "\000" 
+    IDC_COM_NAME, 0x403, 6, 0
+0x4f43, 0x314d, 0x0030, 
+    IDC_BAUDRATE, 0x403, 5, 0
+0x3432, 0x3030, "\000" 
+    IDC_BAUDRATE, 0x403, 5, 0
+0x3834, 0x3030, "\000" 
+    IDC_BAUDRATE, 0x403, 5, 0
+0x3639, 0x3030, "\000" 
+    IDC_BAUDRATE, 0x403, 6, 0
+0x3931, 0x3032, 0x0030, 
+    IDC_BAUDRATE, 0x403, 6, 0
+0x3833, 0x3034, 0x0030, 
+    IDC_BAUDRATE, 0x403, 6, 0
+0x3735, 0x3036, 0x0030, 
+    IDC_BAUDRATE, 0x403, 7, 0
+0x3131, 0x3235, 0x3030, "\000" 
+    IDC_DATABITS, 0x403, 2, 0
+0x0037, 
+    IDC_DATABITS, 0x403, 2, 0
+0x0038, 
+    IDC_PARITY, 0x403, 7, 0
+0xbcc5, 0xa3d0, 0xe9d1, "\000" 
+    IDC_PARITY, 0x403, 7, 0
+0xe6c6, 0xa3d0, 0xe9d1, "\000" 
+    IDC_PARITY, 0x403, 7, 0
+0xdece, 0xa3d0, 0xe9d1, "\000" 
+    IDC_STOPBITS, 0x403, 2, 0
+0x0031, 
+    IDC_STOPBITS, 0x403, 2, 0
+0x0032, 
+    IDC_FLOW_CONTROL, 0x403, 8, 0
+0x4f58, 0x2f4e, 0x464f, 0x0046, 
+    IDC_FLOW_CONTROL, 0x403, 5, 0
+0xb2d3, 0xfebc, "\000" 
+    IDC_FLOW_CONTROL, 0x403, 3, 0
+0xdece, "\000" 
+    IDC_LPT_NAME, 0x403, 5, 0
+0x504c, 0x3154, "\000" 
+    IDC_LPT_NAME, 0x403, 5, 0
+0x504c, 0x3254, "\000" 
+    IDC_PAGE_WIDTH, 0x403, 3, 0
+0x3635, "\000" 
+    IDC_PAGE_WIDTH, 0x403, 3, 0
+0x3038, "\000" 
+    0
+END
+
+#endif    // 中文(中华人民共和国) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE 4, 2
+#pragma code_page(936)
+#endif //_WIN32
+#include "res\PosdllDemo.rc2"  // non-Microsoft Visual C++ edited resources
+#include "l.chs\afxres.rc"          // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
