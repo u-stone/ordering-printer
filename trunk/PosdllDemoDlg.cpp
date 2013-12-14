@@ -7,6 +7,7 @@
 #include "LoadDll.h"
 #include "PrintSamples.h"
 #include "PrintWorker.h"
+#include "uiInfo.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -175,30 +176,32 @@ BOOL CPosdllDemoDlg::OnInitDialog()
 		CDialog::OnCancel();
 		return false;
 	}
+	UpdateUIData(FALSE);
 	/*初始化界面显示*/
-	m_ctrlIPAddr.SetAddress(192,168,10,251);
-	m_ctrlIPAddr.EnableWindow(false);
-	
-	m_ctrlComName.SetCurSel(0);
-	m_ctrlDataBits.SetCurSel(1);
-	m_ctrlBaudrate.SetCurSel(2); 
-	m_ctrlStopBits.SetCurSel(0);
-	m_ctrlParity.SetCurSel(2);
-	m_ctrlFlowControl.SetCurSel(1);
+	//m_ctrlIPAddr.SetAddress(192,168,10,251);
+	//m_ctrlIPAddr.EnableWindow(false);
+	//
+	//m_ctrlComName.SetCurSel(0);
+	//m_ctrlDataBits.SetCurSel(1);
+	//m_ctrlBaudrate.SetCurSel(2); 
+	//m_ctrlStopBits.SetCurSel(0);
+	//m_ctrlParity.SetCurSel(2);
+	//m_ctrlFlowControl.SetCurSel(1);
 
-	m_ctrlLPTName.SetCurSel(0);
+	//m_ctrlLPTName.SetCurSel(0);
 
-	m_ctrlPageWidth.SetCurSel(1);
+	//m_ctrlPageWidth.SetCurSel(1);
 
-	SetDlgItemText(IDC_DRV_NAME,"BTP-2002CP(S)");
+	//SetDlgItemText(IDC_DRV_NAME,"BTP-2002CP(S)");
 
-	int iMajor,iMinor;
-	CString str,tmp;
-	VC_POS_GetVersionInfo(&iMajor,&iMinor);
-	str = "一切正常，版本号V";
-	tmp.Format("%d.%d",iMajor,iMinor);
-	str += tmp;
-	SetDlgItemText(IDC_EDIT_STATUS,str);
+	//int iMajor,iMinor;
+	//CString str,tmp;
+	//VC_POS_GetVersionInfo(&iMajor,&iMinor);
+	//str = "一切正常，版本号V";
+	//tmp.Format("%d.%d",iMajor,iMinor);
+	//str += tmp;
+	//SetDlgItemText(IDC_EDIT_STATUS,str);
+
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -704,6 +707,7 @@ void CPosdllDemoDlg::OnDestroy() //窗口关闭
 	{
 		UnloadPosdll();
 	}
+	UpdateUIData(TRUE);
 }
 
 void CPosdllDemoDlg::OnModeStandard() //标准模式
@@ -777,6 +781,110 @@ LRESULT CPosdllDemoDlg::OnUpdateLog(WPARAM wParam, LPARAM lParam)
 	}
 	oldsize = cursize;
 	return 0;
+}
+
+void CPosdllDemoDlg::ClickHelper(int index)
+{
+	switch (index){
+		case 0:
+			OnPortCom();
+			break;
+		case 1:
+			OnPortLpt();
+			break;
+		case 2:
+			OnPortUsb();
+			break;
+		case 3:
+			OnPortNet();
+			break;
+		case 4:
+			OnPortDrv();
+			break;
+		default:
+			break;
+	}
+}
+
+void CPosdllDemoDlg::UpdateUIData(BOOL bToLocal)
+{
+	CString value;
+	DWORD btns[5] = {IDC_PORT_COM, IDC_PORT_LPT, IDC_PORT_USB, IDC_PORT_NET, IDC_PORT_DRV};
+	CString btnnames[5] = {_T("串口"), _T("并口"), _T("USB口"), _T("网络接口"), _T("驱动程序")};
+
+	DWORD combobox[7] = {IDC_COM_NAME, IDC_PARITY, IDC_BAUDRATE, 
+		IDC_STOPBITS, IDC_DATABITS, IDC_FLOW_CONTROL, IDC_LPT_NAME};
+	CString comboboxname[7] = {
+		_T("串口名称"), _T("校验位"), _T("每秒位数"), 
+		_T("停止位"), _T("数据位"), _T("数据流控制"), _T("并口名称")
+	};
+
+
+	if (bToLocal){//将界面信息存到本地
+		UpdateData(TRUE);
+		//端口选择 : 串口  并口  USB口  网络接口  驱动程序
+		DWORD itmp = 0;
+		for (int i = 0; i < sizeof(btns)/sizeof(btns[0]); ++i){
+			itmp = ((CButton*)GetDlgItem(btns[i]))->GetCheck();
+			if (itmp == 1){
+				itmp = i;
+				break;
+			}
+		}
+		uiSetInfo(_T("端口选择"), btnnames[itmp]);
+		
+		//串口名称
+		for (int i = 0; i < sizeof(combobox) /sizeof(combobox[0]); ++i){
+			((CComboBox*)GetDlgItem(combobox[i]))->GetWindowText(value);
+			uiSetInfo(comboboxname[i], value);
+		}
+		//IP地址
+		BYTE ip[4] = {0};
+		m_ctrlIPAddr.GetAddress(itmp);
+		value.Format(_T("%d"), itmp);
+		uiSetInfo(_T("IP地址"), value);
+		//驱动名称
+		GetDlgItem(IDC_DRV_NAME)->GetWindowText(value);
+		uiSetInfo(_T("驱动名称"), value);
+		//请求地址
+		GetDlgItem(IDC_EdtUrl)->GetWindowText(value);
+		uiSetInfo(_T("请求地址"), value);
+	} else {
+		//把本地信息更新到界面   
+		//端口选择
+		int itmp = 0;
+		CString cstmp;
+		value = uiGetInfo(_T("端口选择"));
+		for (int i = 0; i < sizeof(btns)/sizeof(btns[0]); ++i) {
+			((CButton*)GetDlgItem(btns[i]))->SetCheck(BST_UNCHECKED);
+		}
+		for (int i = 0; i < sizeof(btns)/sizeof(btns[0]); ++i) {
+			((CButton*)GetDlgItem(btns[i]))->GetWindowText(cstmp);
+			if (value.CompareNoCase(cstmp) == 0){
+				((CButton*)GetDlgItem(btns[i]))->SetCheck(BST_CHECKED);
+				ClickHelper(i);//模拟鼠标点击  引发事件响应
+				break;
+			}
+		}
+		//端口配置
+		int index = 0;
+		for (int i = 0; i < sizeof(combobox) / sizeof(combobox[0]); ++i) {
+			value = uiGetInfo(comboboxname[i]);
+			index = ((CComboBox*)GetDlgItem(combobox[i]))->SelectString(-1, value);
+			if (index == LB_ERR)//找不到就默认选第一个
+				((CComboBox*)GetDlgItem(combobox[i]))->SetCurSel(0);
+		}
+		//IP地址
+		value = uiGetInfo(_T("IP地址"));
+		itmp = atoi((LPCTSTR)value);
+		m_ctrlIPAddr.SetAddress(itmp);
+		//驱动名称
+		value = uiGetInfo(_T("驱动名称"));
+		GetDlgItem(IDC_DRV_NAME)->SetWindowText(value);
+		//请求地址
+		value = uiGetInfo(_T("请求地址"));
+		GetDlgItem(IDC_EdtUrl)->SetWindowText(value);
+	}
 }
 
 
