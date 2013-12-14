@@ -81,6 +81,10 @@ public:
 	afx_msg void OnBnClickedBtnlog();
 	BOOL CPosdllDemoDlg::JustOpenPort();
 	afx_msg LRESULT OnUpdateLog(WPARAM wParam, LPARAM lParam);
+
+	void ClickHelper(int index);
+	//Remark: bToLocal为FALSE表示用本地信息更新界面， 为TRUE表示将界面信息存到本地
+	void UpdateUIData(BOOL bToLocal = FALSE);
 	// 接口地址
 	CString m_editUrl;
 	// 日志listbox
