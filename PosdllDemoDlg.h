@@ -87,6 +87,11 @@ public:
 	void UpdateUIData(BOOL bToLocal = FALSE);
 	// 接口地址
 	CString m_editUrl;
+	//打印机信息配置
+	CString mPrintServerIP;
+	CString mPrintServerPort;
+	CString mPrintIMEI;
+	CString mPrintPW;
 	// 日志listbox
 	CListBox m_loglistbox;
 };

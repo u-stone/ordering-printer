@@ -217,6 +217,10 @@
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 			>
 			<File
+				RelativePath=".\dtIO.cpp"
+				>
+			</File>
+			<File
 				RelativePath="httpclient.cpp"
 				>
 				<FileConfiguration
@@ -368,7 +372,23 @@
 			Filter="h;hpp;hxx;hm;inl"
 			>
 			<File
+				RelativePath=".\AutoCS.h"
+				>
+			</File>
+			<File
+				RelativePath=".\basefile.h"
+				>
+			</File>
+			<File
 				RelativePath=".\ComonFunc.h"
+				>
+			</File>
+			<File
+				RelativePath=".\dtIO.h"
+				>
+			</File>
+			<File
+				RelativePath=".\dtprotocol.h"
 				>
 			</File>
 			<File
@@ -401,6 +421,10 @@
 			</File>
 			<File
 				RelativePath="Resource.h"
+				>
+			</File>
+			<File
+				RelativePath=".\RWBuf.h"
 				>
 			</File>
 			<File

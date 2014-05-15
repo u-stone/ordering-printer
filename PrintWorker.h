@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <list>
 #include "PrintSamples.h"
 
 using namespace std;
@@ -24,11 +25,11 @@ namespace Printer_Lsh{
 			bPrintThreadWorking = FALSE;
 			//iPrinting = 0;
 			hWndMsg = NULL;
-			strUrl = "";//默认使用这个地址请求数据
+			strUrl = "";                     //默认使用这个地址请求数据
 			hTimer = INVALID_HANDLE_VALUE;
-			pPrintFunc = PrintInStandardMode56;//默认使用这种打印
 			IsPrinter = FALSE;
 			pStartPrinterFunc = startPrinterPOS;
+			pPrintFunc = PrintInStandardMode56;   //默认使用这种打印
 			pEndPrinterPrintFunc = endPrinterPOS;
 			bEnablePrint = TRUE;
 		}
@@ -39,6 +40,11 @@ namespace Printer_Lsh{
 		HWND hWndMsg;                       //指定接收日志的窗口句柄
 		//volatile int   iPrinting;         //记录当前打印线程是否正在打印, 为0表示没有在打印，为1表示正在打印
 		std::string strUrl;                 //记录得到数据的URL
+		std::string strPrintServerIP;       //打印机请求数据的服务器IP
+		std::string strPrintServerPort;     //打印机请求数据的服务器打印服务端口
+		std::string strPrintPW;             //打印机密码
+		std::string strPrintIMEI;           //打印机IMEI设备号
+		RWList_ms   printBuf;               //打印数据缓存
 		HANDLE hTimer;                      //等待计时器句柄
 		PPRINTFUNC pPrintFunc;
 		START_PRINTER pStartPrinterFunc;
@@ -52,17 +58,6 @@ namespace Printer_Lsh{
 			bSuc = false;
 			index = -1;
 		}
-// 		PrintRecorder(PrintRecorder& rhp){
-// 			swap(rhp);
-// 		}
-// 		PrintRecorder& operator = (PrintRecorder& rhp){
-// 			swap(rhp);
-// 			return *this;
-// 		}
-// 		void swap(PrintRecorder& rhs){
-// 			std::swap(index, rhs.index);
-// 			std::swap(strPrintText, rhs.strPrintText);
-// 		}
 
 		PrintRecorder(const PrintRecorder& rhp){
 			copy(rhp);
@@ -100,8 +95,8 @@ namespace Printer_Lsh{
 		}
 
 	private:
-		bool bSuc;                   //记录打印是否成功
-		size_t index;         //记录打印的编号
+		bool         bSuc;           //记录打印是否成功
+		size_t       index;          //记录打印的编号
 		std::string  strPrintText;   //记录打印的文本
 
 		static size_t s_index;
@@ -122,13 +117,13 @@ namespace Printer_Lsh{
 		static void Init();
 
 		//Group: 可等待计时器
-		static HANDLE CreateTimer();
-		static void StartTimer();
-		static void StopTimer();
+ 		//static HANDLE CreateTimer();
+ 		//static void StartTimer();
+ 		//static void StopTimer();
 		//static void NextLoopTimer();
 
 		//打印的实际执行函数
-		static void DoPrint();
+		static bool DoPrint(std::string& strData);
 
 	public:
 		//Group: 更新打印信息获取的 URL
@@ -150,8 +145,8 @@ namespace Printer_Lsh{
 		static CRITICAL_SECTION s_csUrl;      //保护URL
 		static CRITICAL_SECTION s_csPrintFunc;//保证可以替换打印函数
 		static CRITICAL_SECTION s_csLog;      //保护日志数组
-		static std::vector<CString> s_Log; //记录打印的日志
+		static std::vector<CString> s_Log;    //记录打印的日志
+		static std::list<std::string> s_PrintConBuf;  //打印内容的缓存
 	};
-
 }
 

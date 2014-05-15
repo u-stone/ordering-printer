@@ -634,19 +634,23 @@ void CPosdllDemoDlg::OnQueryStatus() //查询状态
 void CPosdllDemoDlg::OnPrint() 
 {
 	// TODO: Add your control notification handler code here
-	if (!JustOpenPort()) {
-		return;
-	}
+// 	if (!JustOpenPort()) {
+// 		return;
+// 	}
 
 	UpdateData(TRUE);
-	if (m_editUrl == "") {
-		m_loglistbox.AddString("请填写合法的URL，格式为http://xxx");
-		return;
-	}
+	//if (m_editUrl == "") {
+	//	m_loglistbox.AddString("请填写合法的URL，格式为http://xxx");
+	//	return;
+	//}
 
 	g_pi.hWndMsg = GetSafeHwnd();
 	g_pi.strUrl = m_editUrl;
 	g_pi.IsPrinter = IsPrinter;
+	g_pi.strPrintServerIP = mPrintServerIP;
+	g_pi.strPrintServerPort = mPrintServerPort;
+	g_pi.strPrintIMEI = mPrintIMEI;
+	g_pi.strPrintPW = mPrintPW;
 
 	if (g_pi.bEnablePrint == FALSE) {
 		g_pi.bEnablePrint = TRUE;
@@ -884,6 +888,12 @@ void CPosdllDemoDlg::UpdateUIData(BOOL bToLocal)
 		//请求地址
 		value = uiGetInfo(_T("请求地址"));
 		GetDlgItem(IDC_EdtUrl)->SetWindowText(value);
+
+		//打印机配置信息
+		mPrintServerIP = uiGetInfo(_T("打印服务器IP"));
+		mPrintServerPort = uiGetInfo(_T("打印服务器PORT"));
+		mPrintPW = uiGetInfo(_T("打印机密码"));
+		mPrintIMEI = uiGetInfo(_T("打印机IMEI"));
 	}
 }
 
