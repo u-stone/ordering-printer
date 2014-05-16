@@ -435,42 +435,6 @@
 				RelativePath=".\uiInfo.h"
 				>
 			</File>
-			<Filter
-				Name="json"
-				>
-				<File
-					RelativePath="json\autolink.h"
-					>
-				</File>
-				<File
-					RelativePath="json\config.h"
-					>
-				</File>
-				<File
-					RelativePath="json\features.h"
-					>
-				</File>
-				<File
-					RelativePath="json\forwards.h"
-					>
-				</File>
-				<File
-					RelativePath="json\json.h"
-					>
-				</File>
-				<File
-					RelativePath="json\reader.h"
-					>
-				</File>
-				<File
-					RelativePath="json\value.h"
-					>
-				</File>
-				<File
-					RelativePath="json\writer.h"
-					>
-				</File>
-			</Filter>
 		</Filter>
 		<Filter
 			Name="Resource Files"

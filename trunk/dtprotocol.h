@@ -15,9 +15,9 @@ public:
 	void set(const char* imei, const char* pw){
 		memset(fpt.hd.hdcon, ' ', sizeof(fpt.hd));
 		fpt.hd.efID[0] = '1';
-		memcpy(fpt.hd.pw, pw, sizeof(fpt.hd.pw));
+		memcpy(fpt.hd.pw, pw, min(sizeof(fpt.hd.pw), strlen(pw)));
 		memset(imeiid, ' ', sizeof(imeiid));
-		memcpy(imeiid, imei, sizeof(imeiid));
+		memcpy(imeiid, imei, min(sizeof(imeiid), strlen(imei)));
 	}
 
 	///构建第一次连接的时候需要告诉服务器自己是谁

@@ -651,9 +651,13 @@ void CPosdllDemoDlg::OnPrint()
 	g_pi.strPrintServerPort = mPrintServerPort;
 	g_pi.strPrintIMEI = mPrintIMEI;
 	g_pi.strPrintPW = mPrintPW;
+	SECURITY_DESCRIPTOR sd;
 	SECURITY_ATTRIBUTES sa;
 	sa.nLength = sizeof(sa);
 	sa.bInheritHandle = FALSE;
+	sa.lpSecurityDescriptor = &sd;
+	InitializeSecurityDescriptor(&sd, SECURITY_DESCRIPTOR_REVISION);
+	SetSecurityDescriptorDacl(&sd, TRUE, 0, FALSE);
 	g_pi.hEventCallPrint = CreateEvent(&sa, TRUE, FALSE, NULL);
 
 	if (g_pi.bEnablePrint == FALSE) {
