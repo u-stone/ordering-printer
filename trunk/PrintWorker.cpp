@@ -89,7 +89,9 @@ INT PrintWorker::doprint(void* pParam){
 
 		ResetEvent(s_pPrintInfo->hEventCallPrint);
 
-		while (s_pPrintInfo->printBuf.readBuf(prtitem)){
+		while (s_pPrintInfo->printBuf.readBuf(prtitem, false)){
+			//if (prtitem.bPrinted)
+			//	break;
 			if (s_pPrintInfo->pPrintFunc != NULL){
 
 				if(s_pPrintInfo->IsPrinter)  //如果选择用驱动程序打印
@@ -97,20 +99,22 @@ INT PrintWorker::doprint(void* pParam){
 
 				strData = pd.parseprtdt(prtitem.strRawData.c_str(), prtitem.strRawData.length());
 
-				if (s_pPrintInfo->pPrintFunc((char *)strData.c_str())) {
-					prtitem.bSuc = true;
-					AddLog(LOG_PRINT_SUC);
-				} else {
-					prtitem.bSuc = false;
-					AddLog(LOG_PRINT_FAILED);
-				}
+				Sleep(3000);
+				AddLog(strData.c_str());
+				//if (s_pPrintInfo->pPrintFunc((char *)strData.c_str())) {
+				//	prtitem.bSuc = true;
+				//	AddLog(LOG_PRINT_SUC);
+				//} else {
+				//	prtitem.bSuc = false;
+				//	AddLog(LOG_PRINT_FAILED);
+				//}
 				prtitem.bPrinted = true;
-				s_pPrintInfo->printBuf.writeBuf(prtitem);
+				s_pPrintInfo->printBuf.writeBuf(prtitem, true);
 
 				if(s_pPrintInfo->IsPrinter) //如果选择用驱动程序打印
 					s_pPrintInfo->pEndPrinterPrintFunc();
+				AddLog(LOG_PRINTEND);
 			}
-			AddLog(LOG_PRINTEND);
 		}
 	}
 	s_pPrintInfo->bPrintThreadWorking = FALSE;
@@ -182,7 +186,10 @@ void PrintWorker::AddLog(CString strlog)
 	AutoCS acs(&s_csLog);
 
 	//如果想要修改日志的格式，可以在这里操作strlog
-	s_Log.push_back(strlog);
+	static int index = 0;
+	char str[10] = {0};
+	sprintf_s(str, sizeof(str), "%6d : ", index++);
+	s_Log.push_back(str + strlog);
 
 
 	//通知界面，准备取数据
