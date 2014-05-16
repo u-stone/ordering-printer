@@ -651,13 +651,18 @@ void CPosdllDemoDlg::OnPrint()
 	g_pi.strPrintServerPort = mPrintServerPort;
 	g_pi.strPrintIMEI = mPrintIMEI;
 	g_pi.strPrintPW = mPrintPW;
+	SECURITY_ATTRIBUTES sa;
+	sa.nLength = sizeof(sa);
+	sa.bInheritHandle = FALSE;
+	g_pi.hEventCallPrint = CreateEvent(&sa, TRUE, FALSE, NULL);
 
 	if (g_pi.bEnablePrint == FALSE) {
 		g_pi.bEnablePrint = TRUE;
 	}
 
 	if (g_pi.bPrintThreadWorking == FALSE){//保证只能开一个打印线程
-		AfxBeginThread((AFX_THREADPROC)Printer_Lsh::PrintWorker::worker, &g_pi);
+		AfxBeginThread((AFX_THREADPROC)Printer_Lsh::PrintWorker::sock_worker, &g_pi);   //网络连接线程
+		AfxBeginThread((AFX_THREADPROC)Printer_Lsh::PrintWorker::doprint, &g_pi);       //打印线程
 	}
 
 	m_ctrlPrint.EnableWindow(false);
@@ -778,7 +783,7 @@ LRESULT CPosdllDemoDlg::OnUpdateLog(WPARAM wParam, LPARAM lParam)
 {
 	static size_t oldsize = 0;
 	size_t cursize = Printer_Lsh::PrintWorker::GetLogCount();
-	for (int i = oldsize; i < cursize; ++i){
+	for (size_t i = oldsize; i < cursize; ++i){
 		//循环得到日志
 		CString str = Printer_Lsh::PrintWorker::GetLog(i);
 		m_loglistbox.AddString(str);

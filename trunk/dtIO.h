@@ -12,6 +12,7 @@
 #include <Windows.h>
 
 #include "dtprotocol.h"
+#include "RWBuf.h"
 
 #define SIZE_RECVBUF   1024
 #define SIZE_SENDBUF   50
@@ -19,8 +20,8 @@
 
 namespace SOCK_Lsh{
 
-	typedef bool (*rdFinished)(std::string& strData);
-	typedef bool (*wrFinished)();
+// 	typedef bool (*rdFinished)();
+// 	typedef bool (*wrFinished)();
 
 	class dtIO
 	{
@@ -30,13 +31,16 @@ namespace SOCK_Lsh{
 		~dtIO(void);
 
 	public:
-		void addOnRDFunc(rdFinished pRDF);
-		void addOnWRFunc(wrFinished pWRF);
+// 		void addOnRDFunc(rdFinished pRDF);
+// 		void addOnWRFunc(wrFinished pWRF);
+		//using namespace Printer_Lsh;
+		void setRdEvent(HANDLE hEvent);
+		void setDataBuf(void* pbuf);
 		int EventDispatch();   //处理socket事件的响应
 
 	private:
 		bool read();
-		bool write(bool bFirst = true);//如果这个为true，那么就要先传打印机信息
+		bool write(bool bFirst = true, char* pdata = 0);//如果这个为true，那么就要先传打印机信息
 		bool heartbeat();
 	private:
 		//inner classes
@@ -74,13 +78,15 @@ namespace SOCK_Lsh{
 			WSAEVENT    mEvent;
 		};
 	private:
+		HANDLE      mPrintEvent;             //接收到数据，要通知打印线程激活的事件
 		char        mBufRecv[SIZE_RECVBUF];  //接收缓存区
 		char        mBufSend[SIZE_SENDBUF];  //发送缓存区
 		packdt      mPack;                   //数据包
 		lcsock      mlcsock;   				  //套接字维护
 		int         mOOT;    				  //超时时长单位ms
-		rdFinished  rdFunc;  				  //读取数据结束之后的回调函数
-		wrFinished  wrFunc;  				  //写出数据结束之后的回调函数
+		RWList_ms*  mDataBuf;                 //接收到的数据的缓存
+// 		rdFinished  rdFunc;  				  //读取数据结束之后的回调函数
+// 		wrFinished  wrFunc;  				  //写出数据结束之后的回调函数
 	};
 
 }

@@ -98,16 +98,18 @@ int dtIO::lcsock::reconn(){
 }
 
 
-dtIO::dtIO(std::string pw, std::string imei) : mPack(pw, imei)
+dtIO::dtIO(std::string pw, std::string imei)
 {
-	
+	mPack.set(imei.c_str(), pw.c_str());
+	mPrintEvent = INVALID_HANDLE_VALUE;
 	mOOT = 20000;//20s
 }
 
 dtIO::dtIO(std::string strSvrIP, std::string strSvrPort, std::string pw, std::string imei)
-     :mlcsock(strSvrIP, strSvrPort), mPack(pw, imei)
+     :mlcsock(strSvrIP, strSvrPort)
 {
-	
+	mPack.set(imei.c_str(), pw.c_str());
+	mPrintEvent = INVALID_HANDLE_VALUE;
 }
 
 dtIO::~dtIO(void)
@@ -116,14 +118,25 @@ dtIO::~dtIO(void)
 }
 
 
-void dtIO::addOnRDFunc(rdFinished pRDF)
+// void dtIO::addOnRDFunc(rdFinished pRDF)
+// {
+// 	rdFunc = pRDF;
+// }
+// void dtIO::addOnWRFunc(wrFinished pWRF)
+// {
+// 	wrFunc = pWRF;
+// }
+
+void dtIO::setRdEvent(HANDLE hEvent)
 {
-	rdFunc = pRDF;
+	mPrintEvent = hEvent;
 }
-void dtIO::addOnWRFunc(wrFinished pWRF)
+
+void dtIO::setDataBuf(void* pbuf)
 {
-	wrFunc = pWRF;
+	mDataBuf = (RWList_ms*)pbuf;
 }
+
 int dtIO::EventDispatch()
 {
 	SOCKET sock_con = mlcsock.mSock;
@@ -131,15 +144,23 @@ int dtIO::EventDispatch()
 	char* recvbuf = mBufRecv;
 	char* sendbuf = mBufSend;
 	int ret = 0;
+	int outtimecount = 0;
+	int MAX_OUTTIME = 5;
+	int MAX_SEC = 3;
+	//15s为心跳包发送的时间间隔
+	//但是每3s需要检查一下打印数据的结果，反馈给服务器
 	while (1){
-		DWORD index = WSAWaitForMultipleEvents(1, event, FALSE, 2000, FALSE);
+		DWORD index = WSAWaitForMultipleEvents(1, event, FALSE, MAX_SEC * 1000, FALSE);
 		if (index == WSA_WAIT_FAILED){
 			closesocket(mlcsock.mSock);
 			return -6;
 		}
 
 		if (index == WSA_WAIT_TIMEOUT){
-			heartbeat();
+			outtimecount++;
+			write(false);
+			if (outtimecount >= MAX_OUTTIME)
+				heartbeat();
 			continue;
 		}
 
@@ -155,16 +176,17 @@ int dtIO::EventDispatch()
 		if (myNWE.lNetworkEvents & FD_READ){//recv data
 			if (myNWE.iErrorCode[FD_READ_BIT] != 0)
 				continue;
+			++outtimecount;
 			read();
 		}
 
-		if (myNWE.lNetworkEvents & FD_WRITE){//send data
-			if (myNWE.iErrorCode[FD_WRITE_BIT] != 0)
-				continue;
-			static bool bfirst = true;
-			write(bfirst);
-			if (bfirst) bfirst = false;
-		}
+ 		if (myNWE.lNetworkEvents & FD_WRITE){//send data
+ 			if (myNWE.iErrorCode[FD_WRITE_BIT] != 0)
+ 				continue;
+ 			//static bool bfirst = true;
+ 			write(true);
+ 			//if (bfirst) bfirst = false;
+ 		}
 
 		if (myNWE.lNetworkEvents & FD_CLOSE){
 			if (myNWE.iErrorCode[FD_CLOSE_BIT] != 0)
@@ -181,6 +203,8 @@ bool dtIO::read()
 	int ret = 0;
 	int count = 0;
 	memset(mBufRecv, 0, sizeof(mBufRecv));
+	packdt pd;
+	PrintItem pi;
 	do{
 		++count;
 		ret = recv(mlcsock.mSock, mBufRecv, sizeof(mBufRecv), 0);
@@ -194,35 +218,34 @@ bool dtIO::read()
 	if (count == SIZE_MAXRECV)
 		return false;
 
-	//收到数据之后  做什么呢  todo
-	bool res = mPack.input(mBufRecv, ret);
-	std::string str2Print;
-	if (res){
-		str2Print = mPack.getprintdt();
-		if (str2Print.empty()){
-			std::cout << "get wrong print data" << std::endl;
-			return false;
-		}
-		if (rdFunc){
-			bool suc = rdFunc(str2Print);//调用回调函数，开始打印
-			if (suc){//确认打印结果 
-				write(false);
-			}
-		}
-	}
+	pi.strRawData = mBufRecv;
+	pi.msgno = pd.getmsgno(pi.strRawData.c_str(), pi.strRawData.length());
+	mDataBuf->writeBuf(pi);//把接收到的数据mBufRecv写入打印缓存中
+	SetEvent(mPrintEvent);
 	std::cout << "\nreceived : " << std::endl;
 	std::cout << mBufRecv << std::endl;
 	return true;
 }
 
-bool dtIO::write(bool bFirst)
+bool dtIO::write(bool bFirst, char* pdata)
 {
 	//如果是第一次写数据，还需要加上打印机的信息
-	memset(mBufSend, 0, sizeof(mBufSend));
 	if (bFirst){
-		mPack.sayname(mBufSend);
+		memset(mBufSend, 0, sizeof(mBufSend));
+		mPack.selfintr(mBufSend);
 	} else {
-		mPack.output(mBufSend, sizeof(mBufSend));
+		PrintItem pi;
+		if (!mDataBuf->readBuf(pi)){
+			return false;//就是没有数据呗
+		}
+		if (pi.bPrinted)
+		{
+			std::string strmsgno = mPack.getmsgno(pi.strRawData.c_str(), pi.strRawData.length());
+			strmsgno = mPack.echodt(strmsgno.c_str(), pi.bSuc);   //向服务器回馈
+			memset(mBufSend, 0, sizeof(mBufSend));
+			memcpy(mBufSend, strmsgno.c_str(), strmsgno.length());
+			mDataBuf->pop();//把已打印的数据踢出去
+		}
 	}
 
 	int ret = send(mlcsock.mSock, mBufSend, strlen(mBufSend), 0);

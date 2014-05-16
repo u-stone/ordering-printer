@@ -3,7 +3,7 @@
 #include <vector>
 #include <list>
 #include "PrintSamples.h"
-
+#include "RWBuf.h"
 using namespace std;
 
 //以下3个宏是关于打印时间的控制
@@ -26,12 +26,19 @@ namespace Printer_Lsh{
 			//iPrinting = 0;
 			hWndMsg = NULL;
 			strUrl = "";                     //默认使用这个地址请求数据
-			hTimer = INVALID_HANDLE_VALUE;
+			//hTimer = INVALID_HANDLE_VALUE;
 			IsPrinter = FALSE;
 			pStartPrinterFunc = startPrinterPOS;
 			pPrintFunc = PrintInStandardMode56;   //默认使用这种打印
 			pEndPrinterPrintFunc = endPrinterPOS;
 			bEnablePrint = TRUE;
+			hEventCallPrint = INVALID_HANDLE_VALUE;
+		}
+		~PrintInfo(){
+			if (hEventCallPrint != INVALID_HANDLE_VALUE){
+				CloseHandle(hEventCallPrint);
+				hEventCallPrint = INVALID_HANDLE_VALUE;
+			}
 		}
 
 		BOOL   bPrintThreadWorking;         //记录打印线程是否在工作
@@ -45,7 +52,8 @@ namespace Printer_Lsh{
 		std::string strPrintPW;             //打印机密码
 		std::string strPrintIMEI;           //打印机IMEI设备号
 		RWList_ms   printBuf;               //打印数据缓存
-		HANDLE hTimer;                      //等待计时器句柄
+		//HANDLE      hTimer;                 //等待计时器句柄
+		HANDLE      hEventCallPrint;        //提醒打印过程来取printBuf数据的事件的句柄
 		PPRINTFUNC pPrintFunc;
 		START_PRINTER pStartPrinterFunc;
 		END_PRINTER pEndPrinterPrintFunc;
@@ -102,15 +110,17 @@ namespace Printer_Lsh{
 		static size_t s_index;
 	};
 
-
 	class PrintWorker
 	{
 	public:
 		PrintWorker(void);
 		~PrintWorker(void);
 
-		//工作线程的主函数
-		static INT worker(void* pParam);
+		//socket连接主线程
+		static INT sock_worker(void* pParam);
+
+		//打印线程函数
+		static INT doprint(void* pParam);
 
 	private:
 		//初始化
@@ -121,9 +131,6 @@ namespace Printer_Lsh{
  		//static void StartTimer();
  		//static void StopTimer();
 		//static void NextLoopTimer();
-
-		//打印的实际执行函数
-		static bool DoPrint(std::string& strData);
 
 	public:
 		//Group: 更新打印信息获取的 URL
@@ -141,11 +148,11 @@ namespace Printer_Lsh{
 		static void AddLog(CString strlog);//添加日志
 
 	private:
-		static PrintInfo * s_pPrintInfo;
-		static CRITICAL_SECTION s_csUrl;      //保护URL
-		static CRITICAL_SECTION s_csPrintFunc;//保证可以替换打印函数
-		static CRITICAL_SECTION s_csLog;      //保护日志数组
-		static std::vector<CString> s_Log;    //记录打印的日志
+		static PrintInfo            * s_pPrintInfo; //保存打印数据
+		static CRITICAL_SECTION       s_csUrl;      //保护URL
+		static CRITICAL_SECTION       s_csPrintFunc;//保证可以替换打印函数
+		static CRITICAL_SECTION       s_csLog;      //保护日志数组
+		static std::vector<CString>   s_Log;    //记录打印的日志
 		static std::list<std::string> s_PrintConBuf;  //打印内容的缓存
 	};
 }

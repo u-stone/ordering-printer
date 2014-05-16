@@ -38,54 +38,84 @@ void PrintWorker::Init()
 }
 
 //打印线程
-INT PrintWorker::worker(void* pParam)
+INT PrintWorker::sock_worker(void* pParam)
 {
 	if (pParam == NULL)
 		return -1;
 	Init();
 
 	s_pPrintInfo = (PrintInfo *)pParam;
-	s_pPrintInfo->bPrintThreadWorking = TRUE;
-	s_pPrintInfo->bEnablePrint = TRUE;
 
-	try {
-		SOCK_Lsh::dtIO dtio(s_pPrintInfo->strPrintServerIP, s_pPrintInfo->strPrintServerPort, 
-			s_pPrintInfo->strPrintPW, s_pPrintInfo->strPrintIMEI);
-		dtio.addOnRDFunc((SOCK_Lsh::rdFinished)PrintWorker::DoPrint);
-		dtio.EventDispatch();
-	} catch (char* e){
-		s_pPrintInfo->bPrintThreadWorking = FALSE;
-		AddLog(e);
-		return -1;
-	} catch (...) {
-		//StopTimer();
-		s_pPrintInfo->bPrintThreadWorking = FALSE;
-		return -1;
+	while (1){
+		try {
+			SOCK_Lsh::dtIO dtio(s_pPrintInfo->strPrintServerIP, s_pPrintInfo->strPrintServerPort, 
+				s_pPrintInfo->strPrintPW, s_pPrintInfo->strPrintIMEI);
+			dtio.setRdEvent(s_pPrintInfo->hEventCallPrint);
+			dtio.setDataBuf(&s_pPrintInfo->printBuf);
+			dtio.EventDispatch();
+		} catch (char* e){
+			s_pPrintInfo->bPrintThreadWorking = FALSE;
+			AddLog(e);
+		} catch (...) {
+			s_pPrintInfo->bPrintThreadWorking = FALSE;
+			AddLog(_T("未知的网络错误..."));
+		}
+		Sleep(60000);//等待一分钟，之后重新连接
 	}
 	//StopTimer();
-	s_pPrintInfo->bPrintThreadWorking = FALSE;
+	AfxMessageBox(_T("网络连接线程崩溃，请查看网络！"));
 	return 0;
 }
 
+INT PrintWorker::doprint(void* pParam){
 
-bool PrintWorker::DoPrint(std::string& strData){
+	if (pParam == NULL)
+		return -1;
 
-	AutoCS acs(&s_csUrl);
-	if (s_pPrintInfo->pPrintFunc != NULL){
-		if(s_pPrintInfo->IsPrinter)  //如果选择用驱动程序打印
-			s_pPrintInfo->pStartPrinterFunc();
+	PrintItem prtitem;
+	std::string strData;
+	s_pPrintInfo = (PrintInfo*)pParam;
+	s_pPrintInfo->bPrintThreadWorking = TRUE;
+	s_pPrintInfo->bEnablePrint = TRUE;
 
- 		if (s_pPrintInfo->pPrintFunc((char *)strData.c_str())) {
- 			AddLog(LOG_PRINT_SUC);
- 		} else {
- 			AddLog(LOG_PRINT_FAILED);
- 		}
+	packdt pd;
+	while (1){
+		DWORD ret = WaitForSingleObject(s_pPrintInfo->hEventCallPrint, 5000);
+		if (ret == WAIT_FAILED){
+			AddLog(_T("[DoPrint] 等待失败"));
+		} else if (ret == WAIT_TIMEOUT){
+			AddLog(_T("[DoPrint] 等待超时"));
+		} else if (ret == WAIT_OBJECT_0){//有新数据
+			AddLog(_T("[DoPrint] 等待事件被激活"));
+		}
 
-		if(s_pPrintInfo->IsPrinter) //如果选择用驱动程序打印
-			s_pPrintInfo->pEndPrinterPrintFunc();
+		ResetEvent(s_pPrintInfo->hEventCallPrint);
+
+		while (s_pPrintInfo->printBuf.readBuf(prtitem)){
+			if (s_pPrintInfo->pPrintFunc != NULL){
+
+				if(s_pPrintInfo->IsPrinter)  //如果选择用驱动程序打印
+					s_pPrintInfo->pStartPrinterFunc();
+
+				strData = pd.parseprtdt(prtitem.strRawData.c_str(), prtitem.strRawData.length());
+
+				if (s_pPrintInfo->pPrintFunc((char *)strData.c_str())) {
+					prtitem.bSuc = true;
+					AddLog(LOG_PRINT_SUC);
+				} else {
+					prtitem.bSuc = false;
+					AddLog(LOG_PRINT_FAILED);
+				}
+				prtitem.bPrinted = true;
+				s_pPrintInfo->printBuf.writeBuf(prtitem);
+
+				if(s_pPrintInfo->IsPrinter) //如果选择用驱动程序打印
+					s_pPrintInfo->pEndPrinterPrintFunc();
+			}
+			AddLog(LOG_PRINTEND);
+		}
 	}
-
-	AddLog(LOG_PRINTEND);
+	s_pPrintInfo->bPrintThreadWorking = FALSE;
 	return true;
 }
 

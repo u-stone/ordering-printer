@@ -1,26 +1,27 @@
 #pragma once
 //#include "uiInfo.h"
 #include "basefile.h"
+
 class packdt
 {
 public:
-	packdt(std::string pw, std::string imei){
-		memset(fpt.hd.hdcon, ' ', sizeof(fpt.hd));
+	packdt(){
 		fpt.hd.efID[0] = '1';
-		memcpy(fpt.hd.pw, pw.c_str(), min(pw.length(), sizeof fpt.hd.pw));
-		memset(imeiid, ' ', sizeof(imeiid));
-		memcpy(imeiid, imei.c_str(), min(imei.length(), sizeof imeiid));
+		
 	}
 	~packdt(){}
 
 public:
-	void set(char* devid, char* pw){
-		memcpy(imeiid, devid, sizeof(imeiid));
+	void set(const char* imei, const char* pw){
+		memset(fpt.hd.hdcon, ' ', sizeof(fpt.hd));
+		fpt.hd.efID[0] = '1';
 		memcpy(fpt.hd.pw, pw, sizeof(fpt.hd.pw));
+		memset(imeiid, ' ', sizeof(imeiid));
+		memcpy(imeiid, imei, sizeof(imeiid));
 	}
 
-	///构建第一次连接的时候需要报的信息：
-	bool sayname(char* pbuf){
+	///构建第一次连接的时候需要告诉服务器自己是谁
+	bool selfintr(char* pbuf){
 		memset(pbuf, ' ', sizeof(fpart));
 		fpt.hd.efID[0] = '1';
 		char* length = "15";
@@ -31,60 +32,78 @@ public:
 		memset(&pbuf[sizeof(fpart)], ' ', sizeof(imeiid));
 		memcpy(&pbuf[sizeof(fpart)], imeiid, sizeof(imeiid));
 		pbuf[sizeof(fpart) + sizeof(imeiid)] = '#';
-		//pbuf[sizeof(packdt)] = '#';
 		return true;
 	}
 	//构建心跳数据包
 	void alivedt(char* pbuf){
 		memcpy(pbuf, "00", 2);
 	}
-	//
-
-	bool input(char* pbuf, int nlen){
+	/**
+	pbuf : 要解析的数据，也是客户端发出的810交易码请求服务器之后返回的811数据
+	nlen : pbuf的长度
+	返回值: 解析得到要打印的字符串
+	*/
+	std::string parseprtdt(const char* pbuf, int nlen){
 		if (nlen < sizeof(fpart))
-			return true;
+			return "";
 		memcpy(&fpt, pbuf, sizeof(fpart));
 		//应该吃进的是811数据
-		int ilen = atoi(fpt.len);//目前来说ilen似乎没什么用
-		if (ilen > 0){
-			vpart.resize(nlen - sizeof fpt,0);
-			//char buf[26];
-			//memcpy(buf, (void)&pbuf[23], 26);
-			memcpy((void*)vpart.c_str(), (void*)&pbuf[sizeof(fpt)], nlen - sizeof fpt);
-			return true;
-		} else 
-			return false;
-	}
-	std::string getprintdt(){
-		int npos = vpart.find("###");
+		std::string strtmp;
+		strtmp.resize(nlen - sizeof fpt,0);
+		memcpy((void*)strtmp.c_str(), (void*)&pbuf[sizeof(fpt)], nlen - sizeof(fpt));
+		int npos = strtmp.find("###");
 		if (npos == std::string::npos)
 			return "";
-		std::string str = vpart.substr(npos+3);
+		std::string str = strtmp.substr(npos+3);
 		return str;
 	}
-	bool output(char* pbuf, int len){
-		if (memcmp(fpt.exc, "810", 3) == 0){//自己刚刚构建了介绍自己的数据给服务器
-			
-		} else if (memcmp(fpt.exc, "811", 3) == 0){//服务器返回了打印数据，要构建反馈数据
-			memset(fpt.len, ' ', sizeof(fpt.len));
-			memcpy(fpt.len, "17 ", 2);
-			memcpy(fpt.exc, "815", 3);
-			memcpy(pbuf, this, sizeof(fpart));
-			int index = sizeof(fpart);
-			pbuf[index++] = '1';
-			memcpy(&pbuf[index], imeiid, sizeof(imeiid));
-			index += sizeof(imeiid);
-			pbuf[index] = '0';//表示打印成功
-			if (vpart.find("###") == std::string::npos)
-				return false;//this time, pbuf is dirty
-			std::string msgno = vpart.substr(6, vpart.find("###") - 6 - 1);//得到消息号
-			memcpy(&pbuf[++index], msgno.c_str(), 4);
-			memcpy(&pbuf[index+4], "#", 1);
-		} else if (memcmp(fpt.exc, "815", 3) == 0) {
-			
-		}
-		return true;
+	/**
+	msgno  : 打印的消息编号 
+	suc    : 打印是否成功
+	返回值 : 返回交易码为815的数据
+	*/
+	std::string echodt(const char* msgno, bool suc){
+		//memcpy(&fpt, pbuf, sizeof(fpt.hd));//得到打印机器类型，以及打印密码
+		//memset(fpt.len, ' ', sizeof(fpt.len));
+		//memcpy(fpt.len, "17", sizeof(fpt.len));
+		////memset(imeiid, ' ', sizeof(imeiid));//imeiid一经初始化设定之后，不再修改
+		//memcpy(&fpt.exc, "815", 3);
+		//下面解析交易码811之后的数据
+		std::string str;
+		str = "1";
+		str += std::string(fpt.hd.pw);
+		str += "17        ";
+		str += "815";
+		str += std::string(imeiid);
+
+		if (suc)  str += "0";
+		else      str += "1";
+
+		str += std::string(msgno);
+		str += "#";
+		return str;
 	}
+	/**
+	pbuf: 是接收到要打印数据811交易码时，对应的服务器返回的数据
+	nlen : 是pbuf的长度
+	返回值 : 得到811数据后，返回打印消息编号
+	*/
+	std::string getmsgno(const char* pbuf, int nlen){
+		if (nlen < sizeof(fpart))
+			return "";
+		memcpy(&fpt, pbuf, sizeof(fpart));
+		//应该吃进的是811数据
+		std::string strtmp;
+		strtmp.resize(nlen - sizeof fpt,0);
+		memcpy((void*)strtmp.c_str(), (void*)&pbuf[sizeof(fpt)], nlen - sizeof(fpt));
+		int pos = strtmp.find(":");
+		if (pos == std::string::npos)
+			return "";
+		
+		std::string str = strtmp.substr(sizeof(fpart), pos-1 - sizeof(fpart));
+		return str;
+	}
+
 private:
 	typedef struct Type_fpart{
 		union head{//包头，不足10位的后补空格
@@ -97,7 +116,7 @@ private:
 		char len[10];    //包长度，不足10位，后补空格
 		char exc[3];     //交易码
 	} fpart;  //固定部分
+
 	fpart fpt;
-	std::string vpart;  //可变部分
 	char imeiid[15];
 };
