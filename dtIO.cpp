@@ -220,8 +220,10 @@ bool dtIO::read()
 
 	pi.strRawData = mBufRecv;
 	pi.msgno = pd.getmsgno(pi.strRawData.c_str(), pi.strRawData.length());
-	mDataBuf->writeBuf(pi);//把接收到的数据mBufRecv写入打印缓存中
-	SetEvent(mPrintEvent);
+	if (pi.msgno.empty()){
+		mDataBuf->writeBuf(pi);//把接收到的数据mBufRecv写入打印缓存中
+		SetEvent(mPrintEvent);
+	}
 	std::cout << "\nreceived : " << std::endl;
 	std::cout << mBufRecv << std::endl;
 	return true;

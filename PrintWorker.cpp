@@ -1,13 +1,11 @@
 #include "stdafx.h"
 #include "PrintWorker.h"
 #include "ComonFunc.h"
-#include "json/json.h"
 #include "httpclient.h"
 #include "LogMsgDef.h"
 #include "AutoCS.h"
 #include "dtIO.h"
 
-#pragma comment(lib, "json_vc71_libmt.lib")
 
 using namespace Printer_Lsh;
 
