@@ -70,16 +70,19 @@ public:
 		//memcpy(&fpt.exc, "815", 3);
 		//下面解析交易码811之后的数据
 		std::string str;
-		str = "1";
-		str += std::string(fpt.hd.pw);
+		for (int i = 0; i < sizeof(fpt.hd.hdcon); ++i){
+			str += fpt.hd.hdcon[i];
+		}
 		str += "17        ";
 		str += "815";
-		str += std::string(imeiid);
+		str += imeiid;
 
 		if (suc)  str += "0";
 		else      str += "1";
 
-		str += std::string(msgno);
+		for (int i = 0; i < sizeof(msgno); ++i){
+			str += msgno[i];
+		}
 		str += "#";
 		return str;
 	}
@@ -100,7 +103,7 @@ public:
 		if (pos == std::string::npos)
 			return "";
 		
-		std::string str = strtmp.substr(sizeof(fpart), pos-1 - sizeof(fpart));
+		std::string str = strtmp.substr(6, pos - 6);
 		return str;
 	}
 
@@ -118,5 +121,5 @@ private:
 	} fpart;  //固定部分
 
 	fpart fpt;
-	char imeiid[15];
+	char imeiid[30];
 };

@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "dtIO.h"
-
 #include <iostream>
 
 using namespace SOCK_Lsh;
@@ -159,8 +158,10 @@ int dtIO::EventDispatch()
 		if (index == WSA_WAIT_TIMEOUT){
 			outtimecount++;
 			write(false);
-			if (outtimecount >= MAX_OUTTIME)
+			if (outtimecount >= MAX_OUTTIME){
 				heartbeat();
+				outtimecount = 0;
+			}
 			continue;
 		}
 
@@ -212,6 +213,8 @@ bool dtIO::read()
 			std::cout << "socket disconnect" << std::endl;
 			return false;
 		} else if (ret > 0){
+			OutputDebugString(_T("接收到："));
+			OutputDebugString(mBufRecv);
 			break;
 		}
 	} while (ret != 0 || (count > SIZE_MAXRECV));
@@ -220,12 +223,10 @@ bool dtIO::read()
 
 	pi.strRawData = mBufRecv;
 	pi.msgno = pd.getmsgno(pi.strRawData.c_str(), pi.strRawData.length());
-	if (pi.msgno.empty()){
-		mDataBuf->writeBuf(pi);//把接收到的数据mBufRecv写入打印缓存中
+	if (!pi.msgno.empty()){
+		mDataBuf->writeBuf(pi, false);//把接收到的数据mBufRecv写入打印缓存中
 		SetEvent(mPrintEvent);
 	}
-	std::cout << "\nreceived : " << std::endl;
-	std::cout << mBufRecv << std::endl;
 	return true;
 }
 
@@ -237,17 +238,17 @@ bool dtIO::write(bool bFirst, char* pdata)
 		mPack.selfintr(mBufSend);
 	} else {
 		PrintItem pi;
-		if (!mDataBuf->readBuf(pi)){
+		if (!mDataBuf->readBuf(pi, true)){//准备给服务器写返回数据，但是要先从缓存中取出数据来看，是否有已打印的数据。
 			return false;//就是没有数据呗
 		}
-		if (pi.bPrinted)
-		{
+		if (pi.bPrinted & !pi.bReplied) {//已经打印，但是没有回复服务器的数据
 			std::string strmsgno = mPack.getmsgno(pi.strRawData.c_str(), pi.strRawData.length());
+			mDataBuf->setReplied(strmsgno);//把已打印的数据踢出去
 			strmsgno = mPack.echodt(strmsgno.c_str(), pi.bSuc);   //向服务器回馈
 			memset(mBufSend, 0, sizeof(mBufSend));
 			memcpy(mBufSend, strmsgno.c_str(), strmsgno.length());
-			mDataBuf->pop();//把已打印的数据踢出去
-		}
+		} else
+			return false;
 	}
 
 	int ret = send(mlcsock.mSock, mBufSend, strlen(mBufSend), 0);
@@ -258,6 +259,9 @@ bool dtIO::write(bool bFirst, char* pdata)
 			std::cout << "error :" << WSAGetLastError() << std::endl;
 		}
 	}
+	OutputDebugString(_T("发送往服务器："));
+	OutputDebugString(mBufSend);
+	OutputDebugString(_T("================\n"));
 	return true;
 }
 
