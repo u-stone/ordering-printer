@@ -32,6 +32,7 @@ public:
 		memset(&pbuf[sizeof(fpart)], ' ', sizeof(imeiid));
 		memcpy(&pbuf[sizeof(fpart)], imeiid, sizeof(imeiid));
 		pbuf[sizeof(fpart) + sizeof(imeiid)] = '#';
+		pbuf[sizeof(fpart) + sizeof(imeiid) + 1] = '\0';
 		return true;
 	}
 	//构建心跳数据包
@@ -75,12 +76,14 @@ public:
 		}
 		str += "17        ";
 		str += "815";
-		str += imeiid;
+		for (int i = 0; i < sizeof(imeiid); ++i){
+			str += imeiid[i];
+		}
 
 		if (suc)  str += "0";
 		else      str += "1";
 
-		for (int i = 0; i < sizeof(msgno); ++i){
+		for (int i = 0; i < sizeof(msgno) - 1; ++i){
 			str += msgno[i];
 		}
 		str += "#";

@@ -210,11 +210,12 @@ bool dtIO::read()
 		++count;
 		ret = recv(mlcsock.mSock, mBufRecv, sizeof(mBufRecv), 0);
 		if (ret == 0){
-			std::cout << "socket disconnect" << std::endl;
+			OutputDebugString(_T("\n[read] 连接断开\n"));
 			return false;
 		} else if (ret > 0){
-			OutputDebugString(_T("接收到："));
+			OutputDebugString(_T("\n接收到服务器数据：\n"));
 			OutputDebugString(mBufRecv);
+			OutputDebugString(_T("\n================\n"));
 			break;
 		}
 	} while (ret != 0 || (count > SIZE_MAXRECV));
@@ -224,7 +225,7 @@ bool dtIO::read()
 	pi.strRawData = mBufRecv;
 	pi.msgno = pd.getmsgno(pi.strRawData.c_str(), pi.strRawData.length());
 	if (!pi.msgno.empty()){
-		mDataBuf->writeBuf(pi, false);//把接收到的数据mBufRecv写入打印缓存中
+		mDataBuf->pushData(pi);//把接收到的数据mBufRecv写入打印缓存中
 		SetEvent(mPrintEvent);
 	}
 	return true;
@@ -236,19 +237,20 @@ bool dtIO::write(bool bFirst, char* pdata)
 	if (bFirst){
 		memset(mBufSend, 0, sizeof(mBufSend));
 		mPack.selfintr(mBufSend);
+		OutputDebugString(_T("\n发送810数据 \n"));
 	} else {
 		PrintItem pi;
-		if (!mDataBuf->readBuf(pi, true)){//准备给服务器写返回数据，但是要先从缓存中取出数据来看，是否有已打印的数据。
-			return false;//就是没有数据呗
-		}
-		if (pi.bPrinted & !pi.bReplied) {//已经打印，但是没有回复服务器的数据
-			std::string strmsgno = mPack.getmsgno(pi.strRawData.c_str(), pi.strRawData.length());
-			mDataBuf->setReplied(strmsgno);//把已打印的数据踢出去
-			strmsgno = mPack.echodt(strmsgno.c_str(), pi.bSuc);   //向服务器回馈
-			memset(mBufSend, 0, sizeof(mBufSend));
-			memcpy(mBufSend, strmsgno.c_str(), strmsgno.length());
-		} else
+		//已经打印，但是没有回复服务器的数据
+		if (!mDataBuf->getData2Reply(pi))
 			return false;
+
+		std::string strmsgno = mPack.getmsgno(pi.strRawData.c_str(), pi.strRawData.length());
+		pi.bReplied = true;
+		mDataBuf->updateData(pi);//把已打印的数据踢出去
+		strmsgno = mPack.echodt(strmsgno.c_str(), pi.bSuc);   //向服务器回馈
+		memset(mBufSend, 0, sizeof(mBufSend));
+		memcpy(mBufSend, strmsgno.c_str(), strmsgno.length()+1);
+		OutputDebugString(_T("\n发送815数据 \n"));
 	}
 
 	int ret = send(mlcsock.mSock, mBufSend, strlen(mBufSend), 0);
@@ -259,9 +261,8 @@ bool dtIO::write(bool bFirst, char* pdata)
 			std::cout << "error :" << WSAGetLastError() << std::endl;
 		}
 	}
-	OutputDebugString(_T("发送往服务器："));
 	OutputDebugString(mBufSend);
-	OutputDebugString(_T("================\n"));
+	OutputDebugString(_T("\n================\n"));
 	return true;
 }
 
@@ -269,8 +270,11 @@ bool dtIO::heartbeat()
 {
 	char buf[3] = "00";
 	//mPack.alivedt(mBufSend);
-	send(mlcsock.mSock, buf, 2, 0);
-	std::cout << "keep alive" << std::endl;
+	send(mlcsock.mSock, buf, strlen(buf), 0);
+	OutputDebugString(_T("Keep alive"));
+	OutputDebugString(_T("\n发送心跳包：\n"));
+	OutputDebugString(buf);
+	OutputDebugString(_T("\n================\n"));
 	return true;
 }
 
