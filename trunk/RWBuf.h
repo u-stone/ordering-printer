@@ -28,7 +28,7 @@ struct PrintItem
 		bReplied = obj.bReplied;
 	}
 	std::string strRawData;
-	std::string msgno;
+	std::string msgno;         //唯一标示符
 	bool        bPrinted;
 	bool        bSuc;
 	bool        bReplied;
@@ -45,14 +45,26 @@ public:
 		DeleteCriticalSection(&mCS);
 	}
 public:
-	bool readBuf(PrintItem& strData, bool handled){
+	bool getData2Print(PrintItem& strData){
+		return readBuf(strData, false, false);
+	}
+	bool getData2Reply(PrintItem& strData){
+		return readBuf(strData, true, false);
+	}
+	bool pushData(PrintItem& strData){
+		return writeBuf(strData, false);
+	}
+	bool updateData(PrintItem& strData){
+		return writeBuf(strData, true);
+	}
+private:
+	bool readBuf(PrintItem& strData, bool bPrinted, bool bReplied){
 		AutoCS acs(&mCS);
 		if (mBuf.empty())
 			return false;
-		//遍历找到第一个未打印的数据
 		std::list<PrintItem>::iterator iter = mBuf.begin();
 		for (; iter != mBuf.end(); ++iter){
-			if (iter->bPrinted == handled){
+			if (iter->bPrinted == bPrinted && iter->bReplied == bReplied){
 				strData = *iter;
 				return true;
 			}
@@ -69,6 +81,7 @@ public:
 				if (bWriteBack){
 					iter->bPrinted = strData.bPrinted;
 					iter->bSuc = strData.bSuc;
+					iter->bReplied = strData.bReplied;
 				}
 				return true;
 			}
@@ -78,23 +91,23 @@ public:
 			cleandt();
 		return true;
 	}
-	void setReplied(std::string& msgno){
-		AutoCS acs(&mCS);
-		std::list<PrintItem>::iterator iter = mBuf.begin();
-		for (; iter != mBuf.end(); ++iter){
-			if (msgno == iter->msgno){//只能让未打印的数据被替换为已打印的数据
-				//mBuf.erase(iter);
-				iter->bReplied = true;
-				return ;
-			}
-		}
-	}
+// 	void setReplied(std::string& msgno){
+// 		AutoCS acs(&mCS);
+// 		std::list<PrintItem>::iterator iter = mBuf.begin();
+// 		for (; iter != mBuf.end(); ++iter){
+// 			if (msgno == iter->msgno){//只能让未打印的数据被替换为已打印的数据
+// 				//mBuf.erase(iter);
+// 				iter->bReplied = true;
+// 				return ;
+// 			}
+// 		}
+// 	}
 private:
 	bool cleandt(){
 		AutoCS acs(&mCS);
 		std::list<PrintItem>::iterator iter = mBuf.begin();
 		for (; iter != mBuf.end(); ++iter){
-			if (iter->bPrinted){
+			if (iter->bReplied){//已回应的数据(一定是已经打印的数据)，要删除掉
 				iter = mBuf.erase(iter);
 			}
 		}

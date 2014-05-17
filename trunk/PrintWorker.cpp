@@ -89,9 +89,7 @@ INT PrintWorker::doprint(void* pParam){
 
 		ResetEvent(s_pPrintInfo->hEventCallPrint);
 
-		while (s_pPrintInfo->printBuf.readBuf(prtitem, false)){
-			//if (prtitem.bPrinted)
-			//	break;
+		while (s_pPrintInfo->printBuf.getData2Print(prtitem)){
 			if (s_pPrintInfo->pPrintFunc != NULL){
 
 				if(s_pPrintInfo->IsPrinter)  //如果选择用驱动程序打印
@@ -99,17 +97,17 @@ INT PrintWorker::doprint(void* pParam){
 
 				strData = pd.parseprtdt(prtitem.strRawData.c_str(), prtitem.strRawData.length());
 
-				Sleep(3000);
+				//Sleep(3000);
 				AddLog(strData.c_str());
-				//if (s_pPrintInfo->pPrintFunc((char *)strData.c_str())) {
-				//	prtitem.bSuc = true;
-				//	AddLog(LOG_PRINT_SUC);
-				//} else {
-				//	prtitem.bSuc = false;
-				//	AddLog(LOG_PRINT_FAILED);
-				//}
+				if (s_pPrintInfo->pPrintFunc((char *)strData.c_str())) {
+					prtitem.bSuc = true;
+					AddLog(LOG_PRINT_SUC);
+				} else {
+					prtitem.bSuc = false;
+					AddLog(LOG_PRINT_FAILED);
+				}
 				prtitem.bPrinted = true;
-				s_pPrintInfo->printBuf.writeBuf(prtitem, true);
+				s_pPrintInfo->printBuf.updateData(prtitem);
 
 				if(s_pPrintInfo->IsPrinter) //如果选择用驱动程序打印
 					s_pPrintInfo->pEndPrinterPrintFunc();
